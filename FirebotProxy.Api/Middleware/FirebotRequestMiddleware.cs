@@ -13,15 +13,19 @@ public class FirebotRequestMiddleware : IMiddleware
 
         CheckFirebotUserAgentIsProvided(context, unauthorizedResponseMessageBuilder);
 
-        if (unauthorizedResponseMessageBuilder.Length <= 0)
+        if (unauthorizedResponseMessageBuilder.Length > 0)
         {
-            context.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
-
-            await context.Response.WriteAsJsonAsync(unauthorizedResponseMessageBuilder.ToString());
+            if (!context.Response.HasStarted)
+            {
+                context.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
+                await context.Response.WriteAsJsonAsync(unauthorizedResponseMessageBuilder.ToString());
+            }
         }
-
-        // continue the request if firebot auth checks out
-        await next(context);
+        else
+        {
+            // continue the request if firebot auth checks out
+            await next(context);
+        }
     }
 
     private void CheckFirebotUserAgentIsProvided(HttpContext context, StringBuilder unauthorizedResponseMessageBuilder)
