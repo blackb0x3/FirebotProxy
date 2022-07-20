@@ -6,5 +6,4 @@ namespace FirebotProxy.Api.Controllers;
 [Route("[controller]")]
 public class ProxyControllerBase : ControllerBase
 {
-    
 }
