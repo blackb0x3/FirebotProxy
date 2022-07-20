@@ -1,10 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿namespace FirebotProxy.Api.Controllers;
 
-namespace FirebotProxy.Api.Controllers;
-
-[ApiController]
-[Route("[controller]")]
-public class HealthCheckController : ControllerBase
+public class HealthCheckController : ProxyControllerBase
 {
     private readonly ILogger<HealthCheckController> _logger;
 
