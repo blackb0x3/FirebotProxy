@@ -7,14 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Adapters" />
-      <Folder Include="PrimaryPorts" />
-      <Folder Include="Representations" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="MediatR" Version="10.0.1" />
       <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
+      <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
       <PackageReference Include="OneOf" Version="3.0.223" />
     </ItemGroup>
 
