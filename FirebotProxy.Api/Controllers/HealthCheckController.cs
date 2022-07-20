@@ -16,6 +16,6 @@ public class HealthCheckController : ProxyControllerBase
             _logger.LogInformation("health check called");
         }
 
-        return Results.Ok("OK");
+        return Results.Ok("FirebotProxy is OK!");
     }
 }
