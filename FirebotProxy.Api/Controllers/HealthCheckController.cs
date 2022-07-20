@@ -11,6 +11,11 @@ public class HealthCheckController : ProxyControllerBase
 
     public IResult HealthCheck()
     {
+        using (_logger.BeginScope(nameof(HealthCheck)))
+        {
+            _logger.LogInformation("health check called");
+        }
+
         return Results.Ok("OK");
     }
 }

@@ -2,8 +2,16 @@ using FirebotProxy.Api;
 using FirebotProxy.Api.Middleware;
 using FirebotProxy.Domain.IoC;
 using FirebotProxy.Infrastructure.IoC;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Serilog setup
+
+builder.Host.UseSerilog((_, lc) => lc
+    .WriteTo.Console()
+    .WriteTo.Seq("http://localhost:5341")
+);
 
 // Add services to the container.
 
