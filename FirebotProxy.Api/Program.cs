@@ -1,5 +1,7 @@
 using FirebotProxy.Api;
 using FirebotProxy.Api.Middleware;
+using FirebotProxy.Domain.IoC;
+using FirebotProxy.Infrastructure.IoC;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 ApiInstaller.Install(builder.Services);
+DomainInstaller.Install(builder.Services);
+InfrastructureInstaller.Install(builder.Services);
 
 var app = builder.Build();
 

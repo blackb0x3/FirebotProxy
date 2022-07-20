@@ -12,4 +12,9 @@
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\FirebotProxy.Domain\FirebotProxy.Domain.csproj" />
+      <ProjectReference Include="..\FirebotProxy.Infrastructure\FirebotProxy.Infrastructure.csproj" />
+    </ItemGroup>
+
 </Project>
