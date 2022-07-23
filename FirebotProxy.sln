@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirebotProxy.Infrastructure
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirebotProxy.Helpers", "FirebotProxy.Helpers\FirebotProxy.Helpers.csproj", "{8266D8D9-94CE-4081-86B3-84ADDB9437EB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirebotProxy.BackgroundWorker", "FirebotProxy.BackgroundWorker\FirebotProxy.BackgroundWorker.csproj", "{6D0E2246-B474-4A3B-885A-06899BA99DBC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{8266D8D9-94CE-4081-86B3-84ADDB9437EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8266D8D9-94CE-4081-86B3-84ADDB9437EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8266D8D9-94CE-4081-86B3-84ADDB9437EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D0E2246-B474-4A3B-885A-06899BA99DBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D0E2246-B474-4A3B-885A-06899BA99DBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D0E2246-B474-4A3B-885A-06899BA99DBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D0E2246-B474-4A3B-885A-06899BA99DBC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

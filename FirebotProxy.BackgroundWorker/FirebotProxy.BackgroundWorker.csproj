@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UserSecretsId>dotnet-FirebotProxy.BackgroundWorker-5450EB8F-3665-4F7E-8DE2-E701307F779E</UserSecretsId>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+        <PackageReference Include="NeoSmart.Caching.Sqlite" Version="6.0.1" />
+        <PackageReference Include="Quartz" Version="3.4.0" />
+        <PackageReference Include="Quartz.Extensions.DependencyInjection" Version="3.4.0" />
+        <PackageReference Include="Quartz.Plugins" Version="3.4.0" />
+        <PackageReference Include="Serilog.Extensions.Hosting" Version="5.0.1" />
+        <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
+        <PackageReference Include="Serilog.Sinks.Seq" Version="5.1.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\FirebotProxy.Domain\FirebotProxy.Domain.csproj" />
+      <ProjectReference Include="..\FirebotProxy.Helpers\FirebotProxy.Helpers.csproj" />
+      <ProjectReference Include="..\FirebotProxy.Infrastructure\FirebotProxy.Infrastructure.csproj" />
+    </ItemGroup>
+</Project>
