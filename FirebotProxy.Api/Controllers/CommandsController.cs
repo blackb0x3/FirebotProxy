@@ -24,7 +24,7 @@ public class CommandsController : ProxyControllerBase
 
         return response.Match(
             result => Results.Ok(result.ChatRankUrl),
-            failure => Results.Problem(failure.Message, statusCode: 500)
+            error => Results.Problem(error.Message, statusCode: 500)
         );
     }
 }
