@@ -1,7 +1,9 @@
 using FirebotProxy.Api;
 using FirebotProxy.Api.Middleware;
 using FirebotProxy.Domain.IoC;
+using FirebotProxy.Helpers;
 using FirebotProxy.Infrastructure.IoC;
+using NeoSmart.Caching.Sqlite;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +16,10 @@ builder.Host.UseSerilog((_, lc) => lc
 );
 
 // Add services to the container.
+builder.Services.AddSqliteCache(options =>
+{
+    options.CachePath = CacheHelper.CreateDistributedCachePath();
+});
 
 builder.Services.AddControllers();
 

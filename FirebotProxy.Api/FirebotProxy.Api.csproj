@@ -9,6 +9,7 @@
     <ItemGroup>
         <PackageReference Include="MediatR" Version="10.0.1" />
         <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
+        <PackageReference Include="NeoSmart.Caching.Sqlite" Version="6.0.1" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="OneOf" Version="3.0.223" />
         <PackageReference Include="Serilog.AspNetCore" Version="6.0.1" />
@@ -18,6 +19,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\FirebotProxy.Domain\FirebotProxy.Domain.csproj" />
+      <ProjectReference Include="..\FirebotProxy.Helpers\FirebotProxy.Helpers.csproj" />
       <ProjectReference Include="..\FirebotProxy.Infrastructure\FirebotProxy.Infrastructure.csproj" />
     </ItemGroup>
 
