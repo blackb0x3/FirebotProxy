@@ -15,7 +15,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Adapters" />
+      <ProjectReference Include="..\FirebotProxy.SecondaryPorts\FirebotProxy.SecondaryPorts.csproj" />
     </ItemGroup>
 
 </Project>
