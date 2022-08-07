@@ -22,4 +22,22 @@ public class FirebotProxyContext : DbContext
 
         base.OnModelCreating(modelBuilder);
     }
+
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+    {
+        var timestamp = DateTime.UtcNow;
+        var entitiesToUpdate = ChangeTracker.Entries().Where(e => e.State is EntityState.Added or EntityState.Modified);
+
+        foreach (var entry in entitiesToUpdate)
+        {
+            if (entry.State == EntityState.Added)
+            {
+                ((EntityBase)entry.Entity).Created = timestamp;
+            }
+
+            ((EntityBase)entry.Entity).LastUpdated = timestamp;
+        }
+
+        return base.SaveChangesAsync(cancellationToken);
+    }
 }
