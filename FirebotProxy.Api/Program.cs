@@ -1,25 +1,22 @@
 using FirebotProxy.Api;
 using FirebotProxy.Api.Middleware;
+using FirebotProxy.Data.Access;
 using FirebotProxy.Domain.IoC;
 using FirebotProxy.Helpers;
 using FirebotProxy.Infrastructure.IoC;
-using NeoSmart.Caching.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Serilog setup
-
 builder.Host.UseSerilog((_, lc) => lc
     .WriteTo.Console()
     .WriteTo.Seq("http://localhost:5341")
 );
 
-// Add services to the container.
-builder.Services.AddSqliteCache(options =>
-{
-    options.CachePath = CacheHelper.CreateDistributedCachePath();
-});
+builder.Services.AddDbContext<FirebotProxyContext>(options =>
+    options.UseSqlite(DatabasePathHelper.GetSqliteConnectionString()));
 
 builder.Services.AddControllers();
 

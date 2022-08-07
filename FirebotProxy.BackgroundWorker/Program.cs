@@ -1,9 +1,10 @@
 using FirebotProxy.BackgroundWorker;
 using FirebotProxy.BackgroundWorker.Jobs;
+using FirebotProxy.Data.Access;
 using FirebotProxy.Domain.IoC;
 using FirebotProxy.Helpers;
 using FirebotProxy.Infrastructure.IoC;
-using NeoSmart.Caching.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using Quartz;
 using Serilog;
 
@@ -14,10 +15,9 @@ IHost host = Host.CreateDefaultBuilder(args)
     )
     .ConfigureServices(services =>
     {
-        services.AddSqliteCache(options =>
-        {
-            options.CachePath = CacheHelper.CreateDistributedCachePath();
-        });
+        services.AddDbContext<FirebotProxyContext>(options =>
+            options.UseSqlite(DatabasePathHelper.GetSqliteConnectionString()));
+
         DomainInstaller.Install(services);
         InfrastructureInstaller.Install(services);
 
@@ -35,7 +35,7 @@ IHost host = Host.CreateDefaultBuilder(args)
                 options.DefaultMaxRunTime = TimeSpan.FromMinutes(1);
             });
 
-            q.ScheduleJob<WriteCachedChatMessagesJob>(trigger => trigger
+            q.ScheduleJob<RemoveExpiredChatMessagesJob>(trigger => trigger
                 .StartAt(DateBuilder.EvenSecondDate(DateTimeOffset.UtcNow.AddSeconds(1)))
                 .WithDailyTimeIntervalSchedule(x => x.WithInterval(10, IntervalUnit.Second)));
         });

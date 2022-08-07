@@ -16,6 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\FirebotProxy.Data.Access\FirebotProxy.Data.Access.csproj" />
       <ProjectReference Include="..\FirebotProxy.SecondaryPorts\FirebotProxy.SecondaryPorts.csproj" />
     </ItemGroup>
 

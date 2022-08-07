@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-
-namespace FirebotProxy.Api.Models.Request;
+﻿namespace FirebotProxy.Api.Models.Request;
 
 public class LogChatMessageRequest
 {

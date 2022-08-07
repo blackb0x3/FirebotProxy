@@ -1,9 +1,7 @@
-﻿using System.Text.Json.Serialization;
-using FirebotProxy.Api.Models.Request;
+﻿using FirebotProxy.Api.Models.Request;
 using FirebotProxy.Domain.PrimaryPorts.LogChatMessage;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace FirebotProxy.Api.Controllers;
 

@@ -1,7 +1,7 @@
-﻿using FirebotProxy.Domain.PrimaryPorts.LogChatMessage;
+﻿using FirebotProxy.Data.Entities;
+using FirebotProxy.Domain.PrimaryPorts.LogChatMessage;
 using FirebotProxy.Domain.Representations;
-using FirebotProxy.SecondaryPorts.CacheChatMessage;
-using FirebotProxy.SecondaryPorts.Models;
+using FirebotProxy.SecondaryPorts.SaveChatMessage;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using OneOf;
@@ -23,7 +23,7 @@ internal class LogChatMessageCommandHandler : IRequestHandler<LogChatMessageComm
     {
         try
         {
-            var saveChatMessageCommand = new CacheChatMessageCommand
+            var saveChatMessageCommand = new SaveChatMessageCommand
             {
                 ChatMessage = new ChatMessage
                 {
