@@ -8,7 +8,7 @@ internal class ChatMessageConfiguration : IEntityTypeConfiguration<ChatMessage>
 {
     public void Configure(EntityTypeBuilder<ChatMessage> builder)
     {
-        builder.ToTable("ChatMessages");
+        builder.ToTable("ChatMessages").HasNoKey();
         builder.HasIndex(msg => msg.SenderUsername);
         builder.HasIndex(msg => msg.Timestamp);
     }
