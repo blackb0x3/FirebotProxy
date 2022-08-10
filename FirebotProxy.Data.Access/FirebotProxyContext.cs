@@ -25,6 +25,13 @@ public class FirebotProxyContext : DbContext
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
+        UpdateEntityTimestamps();
+
+        return base.SaveChangesAsync(cancellationToken);
+    }
+
+    private void UpdateEntityTimestamps()
+    {
         var timestamp = DateTime.UtcNow;
         var entitiesToUpdate = ChangeTracker.Entries().Where(e => e.State is EntityState.Added or EntityState.Modified);
 
@@ -37,7 +44,5 @@ public class FirebotProxyContext : DbContext
 
             ((EntityBase)entry.Entity).LastUpdated = timestamp;
         }
-
-        return base.SaveChangesAsync(cancellationToken);
     }
 }
