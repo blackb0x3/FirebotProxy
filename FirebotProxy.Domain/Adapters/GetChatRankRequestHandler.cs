@@ -1,5 +1,8 @@
-﻿using FirebotProxy.Domain.PrimaryPorts.GetViewerChatRank;
+﻿using System.Collections.Specialized;
+using FirebotProxy.Domain.PrimaryPorts.GetViewerChatRank;
 using FirebotProxy.Domain.Representations;
+using FirebotProxy.Helpers;
+using FirebotProxy.SecondaryPorts.GetAllChatMessages;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using OneOf;
@@ -21,7 +24,21 @@ internal class GetViewerChatRankRequestHandler : IRequestHandler<GetViewerChatRa
     {
         try
         {
-            throw new NotImplementedException();
+            var allMessages = await _mediator.Send(new GetAllChatMessagesQuery(), cancellationToken);
+            var viewerMsgCount = allMessages.Count(cm => string.Equals(cm.SenderUsername, request.ViewerUsername));
+            var userMsgCountLookup = allMessages.GroupBy(cm => cm.SenderUsername)
+                .ToDictionary(grp => grp.Key, grp => grp.Count())
+                .OrderByDescending(x => x.Value)
+                .Select(x => x.Key)
+                .ToList();
+
+            var viewerRankPosition = userMsgCountLookup.IndexOf(request.ViewerUsername) + 1;
+
+            return new GetViewerChatRankResponse
+            {
+                MessageCount = viewerMsgCount,
+                RankPosition = RankPositionHelper.GetRankPositionFromInteger(viewerRankPosition)
+            };
         }
         catch (Exception e)
         {

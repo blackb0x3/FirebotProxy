@@ -2,5 +2,7 @@
 
 public class GetViewerChatRankResponse
 {
-    public string ChatRankUrl { get; set; }
+    public int MessageCount { get; set; }
+
+    public string RankPosition { get; set; }
 }

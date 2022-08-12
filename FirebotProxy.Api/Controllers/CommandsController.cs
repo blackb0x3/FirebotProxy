@@ -23,7 +23,7 @@ public class CommandsController : ProxyControllerBase
         var response = await _mediator.Send(request);
 
         return response.Match(
-            result => Results.Ok(result.ChatRankUrl),
+            result => Results.Ok(result),
             error => Results.Problem(error.Message, statusCode: 500)
         );
     }
