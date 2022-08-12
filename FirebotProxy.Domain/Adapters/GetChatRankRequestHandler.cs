@@ -9,10 +9,12 @@ namespace FirebotProxy.Domain.Adapters;
 internal class GetViewerChatRankRequestHandler : IRequestHandler<GetViewerChatRankRequest, OneOf<GetViewerChatRankResponse, ErrorRepresentation>>
 {
     private readonly ILogger<GetViewerChatRankRequestHandler> _logger;
+    private readonly IMediator _mediator;
 
-    public GetViewerChatRankRequestHandler(ILogger<GetViewerChatRankRequestHandler> logger)
+    public GetViewerChatRankRequestHandler(ILogger<GetViewerChatRankRequestHandler> logger, IMediator mediator)
     {
         _logger = logger;
+        _mediator = mediator;
     }
 
     public async Task<OneOf<GetViewerChatRankResponse, ErrorRepresentation>> Handle(GetViewerChatRankRequest request, CancellationToken cancellationToken)
