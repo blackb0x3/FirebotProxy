@@ -18,7 +18,7 @@ public class FirebotProxyContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new ChatMessageConfiguration());
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(FirebotProxyContext).Assembly);
 
         base.OnModelCreating(modelBuilder);
     }
