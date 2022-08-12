@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace FirebotProxy.Infrastructure.Adapters;
 
-public class SaveChatMessageCommandHandler : IRequestHandler<SaveChatMessageCommand>
+internal class SaveChatMessageCommandHandler : IRequestHandler<SaveChatMessageCommand>
 {
     private readonly ILogger<SaveChatMessageCommandHandler> _logger;
     private readonly FirebotProxyContext _context;
