@@ -1,4 +1,5 @@
-﻿using FirebotProxy.Domain.PrimaryPorts.GetViewerChatRank;
+﻿using FirebotProxy.Domain.PrimaryPorts.GetViewerChatPlot;
+using FirebotProxy.Domain.PrimaryPorts.GetViewerChatRank;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,6 +25,20 @@ public class CommandsController : ProxyControllerBase
 
         return response.Match(
             result => Results.Ok(result),
+            error => Results.Problem(error.Message, statusCode: 500)
+        );
+    }
+
+    [HttpGet("ChatPlot/{viewerUsername}")]
+    public async Task<IResult> ChatPlot(string viewerUsername)
+    {
+        var request = new GetViewerChatPlotRequest { ViewerUsername = viewerUsername };
+
+        var response = await _mediator.Send(request);
+
+        return response.Match(
+            result => Results.Ok(result),
+            validation => Results.BadRequest(validation),
             error => Results.Problem(error.Message, statusCode: 500)
         );
     }
