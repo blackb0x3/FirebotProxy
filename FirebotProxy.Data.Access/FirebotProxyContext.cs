@@ -16,8 +16,6 @@ public class FirebotProxyContext : DbContext
 
     public DbSet<ChatMessage> ChatMessages { get; set; }
 
-    public DbSet<ChatPlot> ChatPlots { get; set; }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(FirebotProxyContext).Assembly);

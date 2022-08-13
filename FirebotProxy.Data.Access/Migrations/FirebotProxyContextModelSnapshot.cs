@@ -42,26 +42,6 @@ namespace FirebotProxy.Data.Access.Migrations
 
                     b.ToTable("ChatMessages", (string)null);
                 });
-
-            modelBuilder.Entity("FirebotProxy.Data.Entities.ChatPlot", b =>
-                {
-                    b.Property<string>("ViewerUsername")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ChartUrl")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("LastUpdated")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("ViewerUsername");
-
-                    b.ToTable("ChatPlots", (string)null);
-                });
 #pragma warning restore 612, 618
         }
     }
