@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,5 +12,6 @@ public class DomainInstaller
     public static void Install(IServiceCollection services)
     {
         services.AddMediatR(DomainProjectAssembly);
+        services.AddValidatorsFromAssembly(DomainProjectAssembly);
     }
 }
