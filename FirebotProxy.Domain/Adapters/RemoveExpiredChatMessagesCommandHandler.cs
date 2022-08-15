@@ -1,13 +1,13 @@
 ﻿using FirebotProxy.Domain.PrimaryPorts.RemoveExpiredChatMessages;
 using FirebotProxy.Domain.Representations;
-using FirebotProxy.SecondaryPorts.RemoveChatMessages;
+using FirebotProxy.SecondaryPorts.RemoveExpiredChatMessages;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using OneOf;
 
 namespace FirebotProxy.Domain.Adapters;
 
-internal class RemoveExpiredChatMessagesCommandHandler : IRequestHandler<RemoveExpiredChatMessagesCommand, OneOf<RemoveExpiredChatMessagesSuccess, ErrorRepresentation>>
+internal class RemoveExpiredChatMessagesCommandHandler : IRequestHandler<PrimaryPorts.RemoveExpiredChatMessages.RemoveExpiredChatMessagesCommand, OneOf<RemoveExpiredChatMessagesSuccess, ErrorRepresentation>>
 {
     private readonly ILogger<RemoveExpiredChatMessagesCommandHandler> _logger;
     private readonly IMediator _mediator;
@@ -18,13 +18,13 @@ internal class RemoveExpiredChatMessagesCommandHandler : IRequestHandler<RemoveE
         _mediator = mediator;
     }
 
-    public async Task<OneOf<RemoveExpiredChatMessagesSuccess, ErrorRepresentation>> Handle(RemoveExpiredChatMessagesCommand request, CancellationToken cancellationToken)
+    public async Task<OneOf<RemoveExpiredChatMessagesSuccess, ErrorRepresentation>> Handle(PrimaryPorts.RemoveExpiredChatMessages.RemoveExpiredChatMessagesCommand request, CancellationToken cancellationToken)
     {
         try
         {
-            var removeChatMessagesCommand = new RemoveChatMessagesCommand { Cutoff = DateTime.UtcNow.AddDays(-30) };
+            var RemoveExpiredChatMessagesCommand = new SecondaryPorts.RemoveExpiredChatMessages.RemoveExpiredChatMessagesCommand { Cutoff = DateTime.UtcNow.AddDays(-30) };
 
-            var result = await _mediator.Send(removeChatMessagesCommand, cancellationToken);
+            var result = await _mediator.Send(RemoveExpiredChatMessagesCommand, cancellationToken);
 
             return new RemoveExpiredChatMessagesSuccess { MessagesRemoved = result.MessagesRemoved };
         }

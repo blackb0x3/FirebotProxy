@@ -1,25 +1,25 @@
 ﻿using FirebotProxy.Data.Access;
-using FirebotProxy.SecondaryPorts.RemoveChatMessages;
+using FirebotProxy.SecondaryPorts.RemoveExpiredChatMessages;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace FirebotProxy.Infrastructure.Adapters;
 
-internal class RemoveChatMessagesCommandHandler : IRequestHandler<RemoveChatMessagesCommand, RemoveChatMessagesResult>
+internal class RemoveExpiredChatMessagesCommandHandler : IRequestHandler<RemoveExpiredChatMessagesCommand, RemoveExpiredChatMessagesResult>
 {
-    private readonly ILogger<RemoveChatMessagesCommandHandler> _logger;
+    private readonly ILogger<RemoveExpiredChatMessagesCommandHandler> _logger;
     private readonly FirebotProxyContext _context;
 
-    public RemoveChatMessagesCommandHandler(ILogger<RemoveChatMessagesCommandHandler> logger, FirebotProxyContext context)
+    public RemoveExpiredChatMessagesCommandHandler(ILogger<RemoveExpiredChatMessagesCommandHandler> logger, FirebotProxyContext context)
     {
         _logger = logger;
         _context = context;
     }
 
-    public async Task<RemoveChatMessagesResult> Handle(RemoveChatMessagesCommand request, CancellationToken cancellationToken)
+    public async Task<RemoveExpiredChatMessagesResult> Handle(RemoveExpiredChatMessagesCommand request, CancellationToken cancellationToken)
     {
-        var result = new RemoveChatMessagesResult();
+        var result = new RemoveExpiredChatMessagesResult();
         var strategy = _context.Database.CreateExecutionStrategy();
 
         await strategy.ExecuteAsync(async () =>
