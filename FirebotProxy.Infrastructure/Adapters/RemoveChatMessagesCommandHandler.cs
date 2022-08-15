@@ -19,10 +19,31 @@ internal class RemoveChatMessagesCommandHandler : IRequestHandler<RemoveChatMess
 
     public async Task<RemoveChatMessagesResult> Handle(RemoveChatMessagesCommand request, CancellationToken cancellationToken)
     {
-        var query = $"DELETE FROM ChatMessages WHERE DATE([Timestamp]) > DATE('{request.Cutoff:s}')";
+        var result = new RemoveChatMessagesResult();
+        var strategy = _context.Database.CreateExecutionStrategy();
 
-        var rowsRemoved = await _context.Database.ExecuteSqlRawAsync(query, cancellationToken);
+        await strategy.ExecuteAsync(async () =>
+        {
+            await using var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
 
-        return new RemoveChatMessagesResult { MessagesRemoved = rowsRemoved };
+            try
+            {
+                var query = $"DELETE FROM ChatMessages WHERE DATE([Timestamp]) > DATE('{request.Cutoff:s}')";
+
+                result.MessagesRemoved = await _context.Database.ExecuteSqlRawAsync(query, cancellationToken);
+
+                await _context.SaveChangesAsync(cancellationToken);
+
+                await transaction.CommitAsync(cancellationToken);
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync(cancellationToken);
+
+                throw;
+            }
+        });
+
+        return result;
     }
 }
