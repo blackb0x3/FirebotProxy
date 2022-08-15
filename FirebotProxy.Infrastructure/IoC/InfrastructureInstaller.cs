@@ -10,6 +10,12 @@ public class InfrastructureInstaller
 
     public static void Install(IServiceCollection services)
     {
+        AddInfrastructureServices(services);
+
         services.AddMediatR(InfrastructureProjectAssembly);
+    }
+
+    private static void AddInfrastructureServices(IServiceCollection services)
+    {
     }
 }
