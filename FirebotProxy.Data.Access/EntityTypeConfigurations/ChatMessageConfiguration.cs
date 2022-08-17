@@ -1,4 +1,5 @@
-﻿using FirebotProxy.Data.Entities;
+﻿using FirebotProxy.Data.Access.ValueGenerators;
+using FirebotProxy.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,7 +9,8 @@ internal class ChatMessageConfiguration : IEntityTypeConfiguration<ChatMessage>
 {
     public void Configure(EntityTypeBuilder<ChatMessage> builder)
     {
-        builder.ToTable("ChatMessages").HasNoKey();
+        builder.ToTable("ChatMessages").HasKey(cm => cm.Id);
+        builder.Property(cm => cm.Id).HasValueGenerator<BigIntGenerator<ChatMessage>>();
         builder.HasIndex(msg => msg.SenderUsername);
         builder.HasIndex(msg => msg.Timestamp);
     }
