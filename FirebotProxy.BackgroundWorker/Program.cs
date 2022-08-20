@@ -1,7 +1,8 @@
 using FirebotProxy.BackgroundWorker;
-using FirebotProxy.BackgroundWorker.Jobs;
+using FirebotProxy.BackgroundWorker.Jobs.RemoveExpiredChatMessages;
 using FirebotProxy.Data.Access;
 using FirebotProxy.Domain.IoC;
+using FirebotProxy.Extensions;
 using FirebotProxy.Helpers;
 using FirebotProxy.Infrastructure.IoC;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +22,7 @@ IHost host = Host.CreateDefaultBuilder(args)
         DomainInstaller.Install(services);
         InfrastructureInstaller.Install(services);
 
-        services.AddQuartz(q =>
+        services.AddQuartz((IServiceCollectionQuartzConfigurator q) =>
         {
             q.SchedulerId = "Scheduler-Core";
 
@@ -35,9 +36,7 @@ IHost host = Host.CreateDefaultBuilder(args)
                 options.DefaultMaxRunTime = TimeSpan.FromMinutes(1);
             });
 
-            q.ScheduleJob<RemoveExpiredChatMessagesJob>(trigger => trigger
-                .StartAt(DateBuilder.EvenSecondDate(DateTimeOffset.UtcNow.AddSeconds(1)))
-                .WithDailyTimeIntervalSchedule(x => x.WithInterval(1, IntervalUnit.Minute)));
+            q.ScheduleJob<RemoveExpiredChatMessagesJob, RemoveExpiredChatMessagesSchedule>();
         });
 
         services.AddHostedService<Worker>();
