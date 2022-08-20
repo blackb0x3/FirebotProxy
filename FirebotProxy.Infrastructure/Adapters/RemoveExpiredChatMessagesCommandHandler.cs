@@ -1,12 +1,15 @@
-﻿using FirebotProxy.Data.Access;
+﻿using System.Runtime.CompilerServices;
+using FirebotProxy.Data.Access;
 using FirebotProxy.SecondaryPorts.RemoveExpiredChatMessages;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
+[assembly: InternalsVisibleTo("FirebotProxy.Infrastructure.Tests")]
+
 namespace FirebotProxy.Infrastructure.Adapters;
 
-internal class RemoveExpiredChatMessagesCommandHandler : IRequestHandler<RemoveExpiredChatMessagesCommand, RemoveExpiredChatMessagesResult>
+internal class RemoveExpiredChatMessagesCommandHandler : IRequestHandler<RemoveExpiredChatMessagesCommand>
 {
     private readonly ILogger<RemoveExpiredChatMessagesCommandHandler> _logger;
     private readonly FirebotProxyContext _context;
@@ -17,9 +20,8 @@ internal class RemoveExpiredChatMessagesCommandHandler : IRequestHandler<RemoveE
         _context = context;
     }
 
-    public async Task<RemoveExpiredChatMessagesResult> Handle(RemoveExpiredChatMessagesCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(RemoveExpiredChatMessagesCommand request, CancellationToken cancellationToken)
     {
-        var result = new RemoveExpiredChatMessagesResult();
         var strategy = _context.Database.CreateExecutionStrategy();
 
         await strategy.ExecuteAsync(async () =>
@@ -28,9 +30,11 @@ internal class RemoveExpiredChatMessagesCommandHandler : IRequestHandler<RemoveE
 
             try
             {
-                var query = $"DELETE FROM ChatMessages WHERE DATE([Timestamp]) > DATE('{request.Cutoff:s}')";
-
-                result.MessagesRemoved = await _context.Database.ExecuteSqlRawAsync(query, cancellationToken);
+                if (_context.Database.IsRelational())
+                {
+                    var query = $"DELETE FROM ChatMessages WHERE DATE([Timestamp]) > DATE('{request.Cutoff:s}')";
+                    await _context.Database.ExecuteSqlRawAsync(query, cancellationToken);
+                }
 
                 await _context.SaveChangesAsync(cancellationToken);
 
@@ -44,6 +48,6 @@ internal class RemoveExpiredChatMessagesCommandHandler : IRequestHandler<RemoveE
             }
         });
 
-        return result;
+        return Unit.Value;
     }
 }

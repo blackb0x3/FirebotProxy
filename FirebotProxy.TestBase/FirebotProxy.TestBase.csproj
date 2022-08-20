@@ -7,16 +7,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="FluentAssertions" Version="6.7.0" />
+      <PackageReference Include="MediatR" Version="10.0.1" />
+      <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.8" />
-      <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.0" />
-      <PackageReference Include="Moq" Version="4.18.2" />
-      <PackageReference Include="NUnit" Version="3.13.3" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\FirebotProxy.Data.Access\FirebotProxy.Data.Access.csproj" />
-      <ProjectReference Include="..\FirebotProxy.TestBase\FirebotProxy.TestBase.csproj" />
     </ItemGroup>
 
 </Project>

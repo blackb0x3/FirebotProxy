@@ -1,4 +1,5 @@
 ﻿using FirebotProxy.Data.Entities;
+using FirebotProxy.TestBase;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
@@ -13,11 +14,7 @@ public class A_FirebotProxy_Database_Context
     [OneTimeSetUp]
     public void OneTimeSetUp()
     {
-        var options = new DbContextOptionsBuilder<FirebotProxyContext>()
-            .UseInMemoryDatabase(Guid.NewGuid().ToString())
-            .Options;
-
-        _context = new FirebotProxyContext(options);
+        _context = FakeContextGenerator.GenerateFakeContext();
     }
 
     [Test]

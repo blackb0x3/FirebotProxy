@@ -26,7 +26,7 @@ internal class RemoveExpiredChatMessagesCommandHandler : IRequestHandler<Primary
 
             var result = await _mediator.Send(RemoveExpiredChatMessagesCommand, cancellationToken);
 
-            return new RemoveExpiredChatMessagesSuccess { MessagesRemoved = result.MessagesRemoved };
+            return new RemoveExpiredChatMessagesSuccess();
         }
         catch (Exception e)
         {

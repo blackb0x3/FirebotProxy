@@ -2,15 +2,11 @@
 
 public class DatabasePathHelper
 {
-    private const string CacheDbFileName = "firebotproxy.db";
+    private const string DbFileName = "firebotproxy.db";
 
-    public static string CreateDbFilePath()
-    {
-        var userHomeFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-        var dbFilePath = Path.Join(userHomeFolder, CacheDbFileName);
+    public static string DbFilePath => Path.Join(UserHomeFolder, DbFileName);
 
-        return dbFilePath;
-    }
+    public static string GetSqliteConnectionString() => $"Data Source={DbFilePath}";
 
-    public static string GetSqliteConnectionString() => $"Data Source={CreateDbFilePath()}";
+    private static string UserHomeFolder => Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
 }

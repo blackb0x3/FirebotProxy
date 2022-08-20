@@ -22,7 +22,7 @@ public class RemoveExpiredChatMessagesJob : IJob
         var result = await _mediator.Send(removeExpiredMessagesCommand);
 
         result.Switch(
-            success => _logger.LogInformation($"Successfully removed {success.MessagesRemoved} messages"),
+            success => _logger.LogInformation($"Successfully removed expired messages"),
             error => _logger.LogError(error.Message)
         );
     }
