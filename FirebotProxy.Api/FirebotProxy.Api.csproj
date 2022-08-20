@@ -20,6 +20,7 @@
     <ItemGroup>
       <ProjectReference Include="..\FirebotProxy.Data.Access\FirebotProxy.Data.Access.csproj" />
       <ProjectReference Include="..\FirebotProxy.Domain\FirebotProxy.Domain.csproj" />
+      <ProjectReference Include="..\FirebotProxy.Extensions\FirebotProxy.Extensions.csproj" />
       <ProjectReference Include="..\FirebotProxy.Helpers\FirebotProxy.Helpers.csproj" />
       <ProjectReference Include="..\FirebotProxy.Infrastructure\FirebotProxy.Infrastructure.csproj" />
     </ItemGroup>

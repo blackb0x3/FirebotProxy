@@ -1,6 +1,6 @@
 ﻿using FirebotProxy.Domain.PrimaryPorts.RemoveExpiredChatMessages;
 using FirebotProxy.Domain.Representations;
-using FirebotProxy.SecondaryPorts.RemoveExpiredChatMessages;
+using FirebotProxy.Extensions;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using OneOf;
@@ -20,20 +20,35 @@ internal class RemoveExpiredChatMessagesCommandHandler : IRequestHandler<Primary
 
     public async Task<OneOf<RemoveExpiredChatMessagesSuccess, ErrorRepresentation>> Handle(PrimaryPorts.RemoveExpiredChatMessages.RemoveExpiredChatMessagesCommand request, CancellationToken cancellationToken)
     {
+        _logger.LogInfo(new { msg = "Handler called", request, handler = nameof(RemoveExpiredChatMessagesCommandHandler) });
+
         try
         {
-            var RemoveExpiredChatMessagesCommand = new SecondaryPorts.RemoveExpiredChatMessages.RemoveExpiredChatMessagesCommand { Cutoff = DateTime.UtcNow.AddDays(-30) };
-
-            var result = await _mediator.Send(RemoveExpiredChatMessagesCommand, cancellationToken);
-
-            return new RemoveExpiredChatMessagesSuccess();
+            return await HandleInternal(cancellationToken);
         }
         catch (Exception e)
         {
-            _logger.LogError(e.Message);
-            _logger.LogError(e.StackTrace);
+            const string msg = "Failed to remove expired chat messages";
 
-            return new ErrorRepresentation { Message = e.Message };
+            _logger.LogError(new
+            {
+                msg,
+                request,
+                handler = nameof(RemoveExpiredChatMessagesCommandHandler),
+                exception = e.Message,
+                e.StackTrace
+            });
+
+            return new ErrorRepresentation { Message = msg };
         }
+    }
+
+    private async Task<RemoveExpiredChatMessagesSuccess> HandleInternal(CancellationToken cancellationToken)
+    {
+        var removeExpiredChatMessagesCommand = new SecondaryPorts.RemoveExpiredChatMessages.RemoveExpiredChatMessagesCommand { Cutoff = DateTime.UtcNow.AddDays(-30) };
+
+        await _mediator.Send(removeExpiredChatMessagesCommand, cancellationToken);
+
+        return new RemoveExpiredChatMessagesSuccess();
     }
 }

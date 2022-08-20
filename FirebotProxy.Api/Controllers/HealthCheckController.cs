@@ -1,4 +1,6 @@
-﻿namespace FirebotProxy.Api.Controllers;
+﻿using FirebotProxy.Extensions;
+
+namespace FirebotProxy.Api.Controllers;
 
 public class HealthCheckController : ProxyControllerBase
 {
@@ -11,10 +13,7 @@ public class HealthCheckController : ProxyControllerBase
 
     public IResult HealthCheck()
     {
-        using (_logger.BeginScope(nameof(HealthCheck)))
-        {
-            _logger.LogInformation("health check called");
-        }
+        _logger.LogInfo(new { msg = "health check called" });
 
         return Results.Ok("FirebotProxy is OK!");
     }

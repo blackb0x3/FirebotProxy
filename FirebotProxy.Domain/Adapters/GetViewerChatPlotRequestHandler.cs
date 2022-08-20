@@ -1,8 +1,7 @@
-﻿using System.Text;
-using FirebotProxy.Data.Entities;
-using FirebotProxy.Domain.InternalModels.GetViewerChatPlot;
+﻿using FirebotProxy.Domain.InternalModels.GetViewerChatPlot;
 using FirebotProxy.Domain.PrimaryPorts.GetViewerChatPlot;
 using FirebotProxy.Domain.Representations;
+using FirebotProxy.Extensions;
 using FirebotProxy.SecondaryPorts.GetChatMessages;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -29,42 +28,63 @@ internal class GetViewerChatPlotRequestHandler : IRequestHandler<GetViewerChatPl
     public async Task<OneOf<GetViewerChatPlotResponse, ValidationRepresentation, ErrorRepresentation>> Handle(
         GetViewerChatPlotRequest request, CancellationToken cancellationToken)
     {
+        _logger.LogInfo(new { msg = "Handler called", request, handler = nameof(LogChatMessageCommandHandler) });
+
         try
         {
-            var getChatMessagesBySenderQuery = new GetChatMessagesBySenderQuery { SenderUsername = request.ViewerUsername };
+            var result = await HandleInternal(request, cancellationToken);
 
-            var chatMessages = await _mediator.Send(getChatMessagesBySenderQuery, cancellationToken);
-
-            if (!chatMessages.Any())
-            {
-                return new ValidationRepresentation($"Viewer {request.ViewerUsername} has not posted to chat.");
-            }
-
-            var dateGroupedMessages = chatMessages.GroupBy(cm => cm.Timestamp.Date.ToString(Iso8601DateFormat))
-                .OrderBy(grp => grp.Key)
-                .ToDictionary(grp => grp.Key, grp => grp.Count());
-
-            if (dateGroupedMessages.Select(x => x.Key).Count() < 2)
-            {
-                return new ValidationRepresentation($"Viewer {request.ViewerUsername} does not have at least 2 days of posts.");
-            }
-
-            var chart = CreateQuickChartPayload(dateGroupedMessages, request.ViewerUsername);
-
-            var url = chart.GetShortUrl();
-
-            return new GetViewerChatPlotResponse
-            {
-                ChartUrl = url
-            };
+            return result.Match<OneOf<GetViewerChatPlotResponse, ValidationRepresentation, ErrorRepresentation>>(
+                success => success,
+                validationResult => validationResult
+            );
         }
         catch (Exception e)
         {
-            _logger.LogError(e.Message);
-            _logger.LogError(e.StackTrace);
+            const string msg = "Failed to get viewer's chat plot";
 
-            return new ErrorRepresentation { Message = e.Message };
+            _logger.LogError(new
+            {
+                msg,
+                request,
+                handler = nameof(GetViewerChatPlotRequestHandler),
+                exception = e.Message,
+                e.StackTrace
+            });
+
+            return new ErrorRepresentation { Message = msg };
         }
+    }
+
+    private async Task<OneOf<GetViewerChatPlotResponse, ValidationRepresentation>> HandleInternal(GetViewerChatPlotRequest request,
+        CancellationToken cancellationToken)
+    {
+        var getChatMessagesBySenderQuery = new GetChatMessagesBySenderQuery { SenderUsername = request.ViewerUsername };
+
+        var chatMessages = await _mediator.Send(getChatMessagesBySenderQuery, cancellationToken);
+
+        if (!chatMessages.Any())
+        {
+            return new ValidationRepresentation($"Viewer {request.ViewerUsername} has not posted to chat.");
+        }
+
+        var dateGroupedMessages = chatMessages.GroupBy(cm => cm.Timestamp.Date.ToString(Iso8601DateFormat))
+            .OrderBy(grp => grp.Key)
+            .ToDictionary(grp => grp.Key, grp => grp.Count());
+
+        if (dateGroupedMessages.Select(x => x.Key).Count() < 2)
+        {
+            return new ValidationRepresentation($"Viewer {request.ViewerUsername} does not have at least 2 days of posts.");
+        }
+
+        var chart = CreateQuickChartPayload(dateGroupedMessages, request.ViewerUsername);
+
+        var url = chart.GetShortUrl();
+
+        return new GetViewerChatPlotResponse
+        {
+            ChartUrl = url
+        };
     }
 
     private static Chart CreateQuickChartPayload(IDictionary<string, int> dateGroupedMessages, string viewerUsername)

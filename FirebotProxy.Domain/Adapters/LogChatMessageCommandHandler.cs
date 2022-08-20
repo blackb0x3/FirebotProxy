@@ -1,6 +1,7 @@
 ﻿using FirebotProxy.Data.Entities;
 using FirebotProxy.Domain.PrimaryPorts.LogChatMessage;
 using FirebotProxy.Domain.Representations;
+using FirebotProxy.Extensions;
 using FirebotProxy.SecondaryPorts.SaveChatMessage;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -21,28 +22,43 @@ internal class LogChatMessageCommandHandler : IRequestHandler<LogChatMessageComm
 
     public async Task<OneOf<LogChatMessageSuccess, ErrorRepresentation>> Handle(LogChatMessageCommand request, CancellationToken cancellationToken)
     {
+        _logger.LogInfo(new { msg = "Handler called", request, handler = nameof(LogChatMessageCommandHandler) });
+
         try
         {
-            var saveChatMessageCommand = new SaveChatMessageCommand
-            {
-                ChatMessage = new ChatMessage
-                {
-                    Content = request.Content,
-                    SenderUsername = request.SenderUsername,
-                    Timestamp = request.Timestamp
-                }
-            };
-
-            await _mediator.Send(saveChatMessageCommand, cancellationToken);
-
-            return new LogChatMessageSuccess();
+            return await HandleInternal(request, cancellationToken);
         }
         catch (Exception e)
         {
-            _logger.LogError(e.Message);
-            _logger.LogError(e.StackTrace);
+            const string msg = "Failed to log chat message";
 
-            return new ErrorRepresentation { Message = e.Message };
+            _logger.LogError(new
+            {
+                msg,
+                request,
+                handler = nameof(LogChatMessageCommandHandler),
+                exception = e.Message,
+                e.StackTrace
+            });
+
+            return new ErrorRepresentation { Message = msg };
         }
+    }
+
+    private async Task<LogChatMessageSuccess> HandleInternal(LogChatMessageCommand request, CancellationToken cancellationToken)
+    {
+        var saveChatMessageCommand = new SaveChatMessageCommand
+        {
+            ChatMessage = new ChatMessage
+            {
+                Content = request.Content,
+                SenderUsername = request.SenderUsername,
+                Timestamp = request.Timestamp
+            }
+        };
+
+        await _mediator.Send(saveChatMessageCommand, cancellationToken);
+
+        return new LogChatMessageSuccess();
     }
 }

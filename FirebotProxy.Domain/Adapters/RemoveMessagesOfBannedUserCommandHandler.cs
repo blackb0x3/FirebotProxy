@@ -1,5 +1,6 @@
 ﻿using FirebotProxy.Domain.PrimaryPorts.RemoveMessagesOfBannedViewer;
 using FirebotProxy.Domain.Representations;
+using FirebotProxy.Extensions;
 using FirebotProxy.SecondaryPorts.RemoveMessagesByUsername;
 using FluentValidation;
 using MediatR;
@@ -26,27 +27,47 @@ internal class RemoveMessagesOfBannedViewerCommandHandler : IRequestHandler<Remo
     public async Task<OneOf<RemoveMessagesOfBannedViewerSuccess, ValidationRepresentation, ErrorRepresentation>> Handle(
         RemoveMessagesOfBannedViewerCommand request, CancellationToken cancellationToken)
     {
+        _logger.LogInfo(new { msg = "Handler called", request, handler = nameof(RemoveMessagesOfBannedViewerCommandHandler) });
+
         try
         {
-            var validationResult = await _validator.ValidateAsync(request, cancellationToken);
+            var result = await HandleInternal(request, cancellationToken);
 
-            if (!validationResult.IsValid)
-            {
-                return new ValidationRepresentation(validationResult);
-            }
-
-            var removeMessagesByUsernameCommand = new RemoveMessagesByUsernameCommand { SenderUsername = request.BannedViewerUsername };
-
-            await _mediator.Send(removeMessagesByUsernameCommand, cancellationToken);
-
-            return new RemoveMessagesOfBannedViewerSuccess();
+            return result.Match<OneOf<RemoveMessagesOfBannedViewerSuccess, ValidationRepresentation, ErrorRepresentation>>(
+                success => success,
+                validationResult => validationResult
+            );
         }
         catch (Exception e)
         {
-            _logger.LogError(e.Message);
-            _logger.LogError(e.StackTrace);
+            const string msg = "Failed to remove messages of banned viewer";
 
-            return new ErrorRepresentation();
+            _logger.LogError(new
+            {
+                msg,
+                request,
+                handler = nameof(RemoveMessagesOfBannedViewerCommandHandler),
+                exception = e.Message,
+                e.StackTrace
+            });
+
+            return new ErrorRepresentation { Message = msg };
         }
+    }
+
+    private async Task<OneOf<RemoveMessagesOfBannedViewerSuccess, ValidationRepresentation>> HandleInternal(RemoveMessagesOfBannedViewerCommand request, CancellationToken cancellationToken)
+    {
+        var validationResult = await _validator.ValidateAsync(request, cancellationToken);
+
+        if (!validationResult.IsValid)
+        {
+            return new ValidationRepresentation(validationResult);
+        }
+
+        var removeMessagesByUsernameCommand = new RemoveMessagesByUsernameCommand { SenderUsername = request.BannedViewerUsername };
+
+        await _mediator.Send(removeMessagesByUsernameCommand, cancellationToken);
+
+        return new RemoveMessagesOfBannedViewerSuccess();
     }
 }

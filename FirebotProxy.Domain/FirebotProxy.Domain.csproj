@@ -18,6 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\FirebotProxy.Extensions\FirebotProxy.Extensions.csproj" />
       <ProjectReference Include="..\FirebotProxy.Helpers\FirebotProxy.Helpers.csproj" />
       <ProjectReference Include="..\FirebotProxy.SecondaryPorts\FirebotProxy.SecondaryPorts.csproj" />
     </ItemGroup>

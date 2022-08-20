@@ -1,4 +1,5 @@
 ﻿using FirebotProxy.Domain.PrimaryPorts.RemoveExpiredChatMessages;
+using FirebotProxy.Extensions;
 using MediatR;
 using Quartz;
 
@@ -22,8 +23,8 @@ public class RemoveExpiredChatMessagesJob : IJob
         var result = await _mediator.Send(removeExpiredMessagesCommand);
 
         result.Switch(
-            success => _logger.LogInformation($"Successfully removed expired messages"),
-            error => _logger.LogError(error.Message)
+            success => _logger.LogInfo(new { msg = "Successfully removed expired messages" }),
+            error => _logger.LogError(error)
         );
     }
 }
