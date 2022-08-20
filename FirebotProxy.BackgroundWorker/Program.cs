@@ -22,7 +22,7 @@ IHost host = Host.CreateDefaultBuilder(args)
         DomainInstaller.Install(services);
         InfrastructureInstaller.Install(services);
 
-        services.AddQuartz((IServiceCollectionQuartzConfigurator q) =>
+        services.AddQuartz(q =>
         {
             q.SchedulerId = "Scheduler-Core";
 
