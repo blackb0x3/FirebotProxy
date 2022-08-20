@@ -34,6 +34,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirebotProxy.TestBase", "Fi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirebotProxy.Extensions", "FirebotProxy.Extensions\FirebotProxy.Extensions.csproj", "{6EE12EE0-251C-4AF8-B2DD-5DAEBB67BDF8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirebotProxy.Models", "FirebotProxy.Models\FirebotProxy.Models.csproj", "{676CE152-BE87-41A4-81BC-20B7A63D2317}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -104,6 +106,10 @@ Global
 		{6EE12EE0-251C-4AF8-B2DD-5DAEBB67BDF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6EE12EE0-251C-4AF8-B2DD-5DAEBB67BDF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6EE12EE0-251C-4AF8-B2DD-5DAEBB67BDF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{676CE152-BE87-41A4-81BC-20B7A63D2317}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{676CE152-BE87-41A4-81BC-20B7A63D2317}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{676CE152-BE87-41A4-81BC-20B7A63D2317}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{676CE152-BE87-41A4-81BC-20B7A63D2317}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{13D54DD1-7B7E-4EA0-81E4-C6C7E778E467} = {961FF514-4792-46A9-B02E-15E178C3CEDB}
