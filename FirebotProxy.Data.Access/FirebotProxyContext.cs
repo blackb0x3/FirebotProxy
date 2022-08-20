@@ -1,5 +1,4 @@
-﻿using FirebotProxy.Data.Access.EntityTypeConfigurations;
-using FirebotProxy.Data.Entities;
+﻿using FirebotProxy.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace FirebotProxy.Data.Access;

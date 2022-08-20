@@ -1,5 +1,4 @@
-﻿using Castle.Components.DictionaryAdapter;
-using FirebotProxy.Data.Access;
+﻿using FirebotProxy.Data.Access;
 using FirebotProxy.Data.Entities;
 using FirebotProxy.Infrastructure.Adapters;
 using FirebotProxy.SecondaryPorts.RemoveMessagesByUsername;

@@ -1,7 +1,6 @@
 ﻿using FirebotProxy.Data.Access;
 using FirebotProxy.Data.Entities;
 using FirebotProxy.Infrastructure.Adapters;
-using FirebotProxy.SecondaryPorts.GetChatMessages;
 using FirebotProxy.SecondaryPorts.RemoveExpiredChatMessages;
 using FirebotProxy.TestBase;
 using FluentAssertions;

@@ -1,7 +1,6 @@
 ﻿using FirebotProxy.Data.Entities;
 using FirebotProxy.TestBase;
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 
 namespace FirebotProxy.Data.Access.Tests;

@@ -1,5 +1,4 @@
 ﻿using FirebotProxy.Data.Access;
-using FirebotProxy.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 

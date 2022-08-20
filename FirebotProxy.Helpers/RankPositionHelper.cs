@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace FirebotProxy.Helpers;
+﻿namespace FirebotProxy.Helpers;
 
 public class RankPositionHelper
 {
