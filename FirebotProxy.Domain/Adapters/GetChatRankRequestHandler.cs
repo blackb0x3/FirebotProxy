@@ -1,4 +1,5 @@
-﻿using FirebotProxy.Domain.PrimaryPorts.GetViewerChatRank;
+﻿using System.Runtime.CompilerServices;
+using FirebotProxy.Domain.PrimaryPorts.GetViewerChatRank;
 using FirebotProxy.Domain.Representations;
 using FirebotProxy.Extensions;
 using FirebotProxy.Helpers;
@@ -6,6 +7,8 @@ using FirebotProxy.SecondaryPorts.GetAllChatMessages;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using OneOf;
+
+[assembly: InternalsVisibleTo("FirebotProxy.Domain.Tests")]
 
 namespace FirebotProxy.Domain.Adapters;
 

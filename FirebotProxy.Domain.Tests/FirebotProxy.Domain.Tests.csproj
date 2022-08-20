@@ -13,4 +13,11 @@
       <PackageReference Include="NUnit" Version="3.13.3" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\FirebotProxy.Domain\FirebotProxy.Domain.csproj" />
+      <ProjectReference Include="..\FirebotProxy.Extensions\FirebotProxy.Extensions.csproj" />
+      <ProjectReference Include="..\FirebotProxy.SecondaryPorts\FirebotProxy.SecondaryPorts.csproj" />
+      <ProjectReference Include="..\FirebotProxy.TestBase\FirebotProxy.TestBase.csproj" />
+    </ItemGroup>
+
 </Project>
