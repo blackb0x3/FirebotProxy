@@ -37,7 +37,7 @@ IHost host = Host.CreateDefaultBuilder(args)
 
             q.ScheduleJob<RemoveExpiredChatMessagesJob>(trigger => trigger
                 .StartAt(DateBuilder.EvenSecondDate(DateTimeOffset.UtcNow.AddSeconds(1)))
-                .WithDailyTimeIntervalSchedule(x => x.WithInterval(10, IntervalUnit.Second)));
+                .WithDailyTimeIntervalSchedule(x => x.WithInterval(1, IntervalUnit.Minute)));
         });
 
         services.AddHostedService<Worker>();
