@@ -121,7 +121,7 @@ internal class GetViewerChatPlotRequestHandler : IRequestHandler<GetViewerChatPl
 
         for (var d = minDate; d <= maxDate; d = d.AddDays(1))
         {
-            dates.Add(d.ToString());
+            dates.Add(d.ToString(Iso8601DateFormat));
         }
 
         return dates;
