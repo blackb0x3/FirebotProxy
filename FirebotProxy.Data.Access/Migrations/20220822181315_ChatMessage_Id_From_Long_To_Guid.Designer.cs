@@ -3,6 +3,7 @@ using System;
 using FirebotProxy.Data.Access;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FirebotProxy.Data.Access.Migrations
 {
     [DbContext(typeof(FirebotProxyContext))]
-    partial class FirebotProxyContextModelSnapshot : ModelSnapshot
+    [Migration("20220822181315_ChatMessage_Id_From_Long_To_Guid")]
+    partial class ChatMessage_Id_From_Long_To_Guid
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.7");
