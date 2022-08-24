@@ -38,6 +38,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirebotProxy.Models", "Fire
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirebotProxy.Seeding", "FirebotProxy.Seeding\FirebotProxy.Seeding.csproj", "{161D5FE1-B353-4C26-88BD-E386CCCFC14F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirebotProxy.Validation", "FirebotProxy.Validation\FirebotProxy.Validation.csproj", "{95AE1DD8-1395-4107-BA62-08A23D22B60B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -116,6 +118,10 @@ Global
 		{161D5FE1-B353-4C26-88BD-E386CCCFC14F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{161D5FE1-B353-4C26-88BD-E386CCCFC14F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{161D5FE1-B353-4C26-88BD-E386CCCFC14F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95AE1DD8-1395-4107-BA62-08A23D22B60B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95AE1DD8-1395-4107-BA62-08A23D22B60B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95AE1DD8-1395-4107-BA62-08A23D22B60B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95AE1DD8-1395-4107-BA62-08A23D22B60B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{13D54DD1-7B7E-4EA0-81E4-C6C7E778E467} = {961FF514-4792-46A9-B02E-15E178C3CEDB}
