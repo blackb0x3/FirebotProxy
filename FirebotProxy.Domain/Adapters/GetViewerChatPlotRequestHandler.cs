@@ -3,6 +3,7 @@ using FirebotProxy.Domain.PrimaryPorts.GetViewerChatPlot;
 using FirebotProxy.Domain.Representations;
 using FirebotProxy.Extensions;
 using FirebotProxy.SecondaryPorts.GetChatMessages;
+using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -18,11 +19,13 @@ internal class GetViewerChatPlotRequestHandler : IRequestHandler<GetViewerChatPl
 
     private readonly ILogger<GetViewerChatPlotRequestHandler> _logger;
     private readonly IMediator _mediator;
+    private readonly IValidator<GetViewerChatPlotRequest> _validator;
 
-    public GetViewerChatPlotRequestHandler(ILogger<GetViewerChatPlotRequestHandler> logger, IMediator mediator)
+    public GetViewerChatPlotRequestHandler(ILogger<GetViewerChatPlotRequestHandler> logger, IMediator mediator, IValidator<GetViewerChatPlotRequest> validator)
     {
         _logger = logger;
         _mediator = mediator;
+        _validator = validator;
     }
 
     public async Task<OneOf<GetViewerChatPlotResponse, ValidationRepresentation, ErrorRepresentation>> Handle(
@@ -32,6 +35,13 @@ internal class GetViewerChatPlotRequestHandler : IRequestHandler<GetViewerChatPl
 
         try
         {
+            var validationResult = await _validator.ValidateAsync(request, cancellationToken);
+
+            if (!validationResult.IsValid)
+            {
+                return new ValidationRepresentation(validationResult);
+            }
+
             var result = await HandleInternal(request, cancellationToken);
 
             return result.Match<OneOf<GetViewerChatPlotResponse, ValidationRepresentation, ErrorRepresentation>>(
@@ -63,6 +73,7 @@ internal class GetViewerChatPlotRequestHandler : IRequestHandler<GetViewerChatPl
 
         var chatMessages = await _mediator.Send(getChatMessagesBySenderQuery, cancellationToken);
 
+        // no point continuing if the viewer has no messages
         if (!chatMessages.Any())
         {
             return new ValidationRepresentation($"Viewer {request.ViewerUsername} has not posted to chat.");
@@ -72,12 +83,13 @@ internal class GetViewerChatPlotRequestHandler : IRequestHandler<GetViewerChatPl
             .OrderBy(grp => grp.Key)
             .ToDictionary(grp => grp.Key, grp => grp.Count());
 
-        if (dateGroupedMessages.Select(x => x.Key).Count() < 2)
+        // no point continuing if the viewer doesn't have enough days of posts to make a meaningful chart
+        if (!ViewerHasAtLeastTwoDaysOfPosts(dateGroupedMessages))
         {
             return new ValidationRepresentation($"Viewer {request.ViewerUsername} does not have at least 2 days of posts.");
         }
 
-        var chart = CreateQuickChartPayload(dateGroupedMessages, request.ViewerUsername);
+        var chart = CreateQuickChartPayload(dateGroupedMessages, request.ViewerUsername, request.ChartType);
 
         var url = chart.GetShortUrl();
 
@@ -87,23 +99,29 @@ internal class GetViewerChatPlotRequestHandler : IRequestHandler<GetViewerChatPl
         };
     }
 
-    private static Chart CreateQuickChartPayload(IDictionary<string, int> dateGroupedMessages, string viewerUsername)
+    private static bool ViewerHasAtLeastTwoDaysOfPosts(IDictionary<string, int> dateGroupedMessages)
+    {
+        return dateGroupedMessages.Keys.Count >= 2;
+    }
+
+    private static Chart CreateQuickChartPayload(IDictionary<string, int> dateGroupedMessages, string viewerUsername, string chartType)
     {
         return new Chart
         {
             Width = 1366,
             Height = 768,
-            Config = GenerateQuickChartLineChartPayload(dateGroupedMessages, viewerUsername)
+            Config = GenerateQuickChartLineChartPayload(dateGroupedMessages, viewerUsername, chartType)
         };
     }
 
-    private static string GenerateQuickChartLineChartPayload(IDictionary<string, int> dateGroupedMessages, string viewerUsername)
+    private static string GenerateQuickChartLineChartPayload(IDictionary<string, int> dateGroupedMessages, string viewerUsername, string chartType)
     {
+        Enum.TryParse<ChartType>(chartType, true, out var parsedChartType);
         var dateLabels = GetDateLabels(DateTime.Parse(dateGroupedMessages.Keys.First()), DateTime.Parse(dateGroupedMessages.Keys.Last()));
 
         var chartData = new ChartPayload<int>
         {
-            Type = "bar",
+            Type = parsedChartType.GetDescription(),
             Data = new Data<int>
             {
                 Labels = dateLabels,
@@ -137,7 +155,7 @@ internal class GetViewerChatPlotRequestHandler : IRequestHandler<GetViewerChatPl
             BackgroundColor = "rgb(50, 134, 230)",
             BorderColor = "rgb(50, 134, 230)",
             Data = new List<int>(),
-            Fill = false,
+            Fill = true,
             LineTension = 0.4
         };
 
