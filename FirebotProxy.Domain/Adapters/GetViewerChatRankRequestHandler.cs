@@ -3,7 +3,7 @@ using FirebotProxy.Domain.PrimaryPorts.GetViewerChatRank;
 using FirebotProxy.Domain.Representations;
 using FirebotProxy.Extensions;
 using FirebotProxy.Helpers;
-using FirebotProxy.SecondaryPorts.GetAllChatMessages;
+using FirebotProxy.SecondaryPorts.GetChatMessageLeaderboard;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using OneOf;
@@ -50,26 +50,32 @@ internal class GetViewerChatRankRequestHandler : IRequestHandler<GetViewerChatRa
 
     private async Task<GetViewerChatRankResponse> HandleInternal(GetViewerChatRankRequest request, CancellationToken cancellationToken)
     {
-        _logger.LogInfo(new { msg = "Retrieving ALL chat messages from storage", request });
-        var allMessages = await _mediator.Send(new GetAllChatMessagesQuery(), cancellationToken);
+        _logger.LogInfo(new { msg = "Retrieving chat message leaderboard from storage", request });
+        var leaderboard = await _mediator.Send(new GetChatMessageLeaderboardQuery(), cancellationToken);
 
-        _logger.LogInfo(new { msg = "Counting number of viewer messages", request });
-        var viewerMsgCount = allMessages.Count(cm => string.Equals(cm.SenderUsername, request.ViewerUsername));
+        _logger.LogInfo(new { msg = "Looking up viewer in the leaderboard" });
 
-        _logger.LogInfo(new { msg = "Make a leaderboard and rank by message count", request });
-        var userMsgCountLookup = allMessages.GroupBy(cm => cm.SenderUsername)
-            .ToDictionary(grp => grp.Key, grp => grp.Count())
-            .OrderByDescending(x => x.Value)
-            .Select(x => x.Key)
-            .ToList();
+        // assume first place to start with
+        var position = 0;
 
-        _logger.LogInfo(new { msg = "Determining viewer position", request });
-        var viewerRankPosition = userMsgCountLookup.IndexOf(request.ViewerUsername) + 1;
+        foreach (var entry in leaderboard)
+        {
+            if (string.Equals(request.ViewerUsername, entry.Key, StringComparison.OrdinalIgnoreCase))
+            {
+                return new GetViewerChatRankResponse
+                {
+                    MessageCount = entry.Value,
+                    RankPosition = RankPositionHelper.GetRankPositionFromInteger(position)
+                };
+            }
+
+            position++;
+        }
 
         return new GetViewerChatRankResponse
         {
-            MessageCount = viewerMsgCount,
-            RankPosition = RankPositionHelper.GetRankPositionFromInteger(viewerRankPosition)
+            MessageCount = 0,
+            RankPosition = RankPositionHelper.GetRankPositionFromInteger(position)
         };
     }
 }

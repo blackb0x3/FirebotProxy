@@ -1,11 +1,11 @@
 ﻿using FirebotProxy.Data.Entities;
 using FirebotProxy.Extensions;
-using FirebotProxy.SecondaryPorts.GetAllChatMessages;
+using FirebotProxy.SecondaryPorts.GetChatMessageLeaderboard;
 using MediatR;
 
 namespace FirebotProxy.Domain.Tests.FakeHandlers;
 
-internal class FakeGetAllChatMessagesQueryHandler : IRequestHandler<GetAllChatMessagesQuery, IReadOnlyCollection<ChatMessage>>
+internal class FakeGetChatMessageLeaderboardQueryHandler : IRequestHandler<GetChatMessageLeaderboardQuery, IReadOnlyCollection<ChatMessage>>
 {
     private readonly List<ChatMessage> ChatMessages = new()
     {
@@ -32,12 +32,12 @@ internal class FakeGetAllChatMessagesQueryHandler : IRequestHandler<GetAllChatMe
 
     private readonly bool _shouldThrow;
 
-    public FakeGetAllChatMessagesQueryHandler(bool shouldThrow)
+    public FakeGetChatMessageLeaderboardQueryHandler(bool shouldThrow)
     {
         _shouldThrow = shouldThrow;
     }
 
-    public async Task<IReadOnlyCollection<ChatMessage>> Handle(GetAllChatMessagesQuery request, CancellationToken cancellationToken)
+    public async Task<IReadOnlyCollection<ChatMessage>> Handle(GetChatMessageLeaderboardQuery request, CancellationToken cancellationToken)
     {
         if (_shouldThrow)
         {

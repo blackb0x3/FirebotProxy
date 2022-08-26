@@ -1,7 +1,7 @@
 ﻿using FirebotProxy.Data.Access;
 using FirebotProxy.Data.Entities;
 using FirebotProxy.Infrastructure.Adapters;
-using FirebotProxy.SecondaryPorts.GetAllChatMessages;
+using FirebotProxy.SecondaryPorts.GetChatMessageLeaderboard;
 using FirebotProxy.TestBase;
 using FluentAssertions;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace FirebotProxy.Infrastructure.Tests;
 
 [TestFixture]
-public class A_GetAllChatMessages_Query_Handler : TestFixtureBase
+public class A_GetChatMessageLeaderboard_Query_Handler : TestFixtureBase
 {
     private FirebotProxyContext _context;
 
@@ -33,9 +33,9 @@ public class A_GetAllChatMessages_Query_Handler : TestFixtureBase
             await _context.SaveChangesAsync();
         }
 
-        var handler = new GetAllChatMessagesQueryHandler(new NullLogger<GetAllChatMessagesQueryHandler>(), _context);
+        var handler = new GetChatMessageLeaderboardQueryHandler(new NullLogger<GetChatMessageLeaderboardQueryHandler>(), _context);
 
-        var resp = await handler.Handle(new GetAllChatMessagesQuery(), CancellationToken.None);
+        var resp = await handler.Handle(new GetChatMessageLeaderboardQuery(), CancellationToken.None);
 
         resp.Count.Should().Be(messagesToAdd);
     }
