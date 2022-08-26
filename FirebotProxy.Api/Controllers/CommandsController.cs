@@ -32,7 +32,12 @@ public class CommandsController : ProxyControllerBase
     [HttpGet("ChatPlot/{viewerUsername}")]
     public async Task<IResult> ChatPlot(string viewerUsername)
     {
-        var request = new GetViewerChatPlotRequest { ViewerUsername = viewerUsername };
+        if (!Request.Query.TryGetValue("chartType", out var chartType))
+        {
+            chartType = "Line";
+        }
+
+        var request = new GetViewerChatPlotRequest { ViewerUsername = viewerUsername, ChartType = chartType };
 
         var response = await _mediator.Send(request);
 
