@@ -3,6 +3,7 @@ using CommandLine;
 using FirebotProxy.Data.Access;
 using FirebotProxy.Data.Entities;
 using FirebotProxy.Seeding;
+using MoreLinq;
 
 Console.WriteLine("Hello, World!");
 
@@ -26,8 +27,18 @@ async Task RunOptions(Options options)
     var msgFaker = new AutoFaker<ChatMessage>();
     msgFaker.RuleFor(cm => cm.SenderUsername, faker => faker.PickRandom(usernamesToPickFrom));
     msgFaker.RuleFor(cm => cm.Timestamp, faker => faker.Date.Between(options.EarliestTimestamp ?? DateTime.Today.AddMonths(-1), DateTime.Today));
-    msgFaker.RuleFor(cm => cm.Content, faker => faker.Lorem.Letter(faker.Random.Number(1, 500)));
+    msgFaker.RuleFor(cm => cm.Content, faker => string.Join(". ", faker.Lorem.Sentences(faker.Random.Int(min: 0, max: 3))));
 
-    await ctx.AddRangeAsync(msgFaker.GenerateLazy(options.AmountToGenerate));
-    await ctx.SaveChangesAsync();
+    const int batchSize = 10000;
+    var totalBatches = options.AmountToGenerate / batchSize;
+    var batchCounter = 0;
+
+    foreach (var batch in msgFaker.GenerateLazy(options.AmountToGenerate).Batch(batchSize))
+    {
+        Console.WriteLine($"Batch {batchCounter++} of {totalBatches}");
+        await ctx.AddRangeAsync(batch);
+        await ctx.SaveChangesAsync();
+        Console.WriteLine("Batch saved");
+        Console.WriteLine(new string('-', Console.BufferWidth / 4));
+    }
 }
