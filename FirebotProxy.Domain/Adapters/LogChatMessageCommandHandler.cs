@@ -47,6 +47,8 @@ internal class LogChatMessageCommandHandler : IRequestHandler<LogChatMessageComm
 
     private async Task<LogChatMessageSuccess> HandleInternal(LogChatMessageCommand request, CancellationToken cancellationToken)
     {
+        _logger.LogDebug(new { msg = "Saving chat message to storage", request });
+
         var saveChatMessageCommand = new SaveChatMessageCommand
         {
             ChatMessage = new ChatMessage
@@ -58,6 +60,8 @@ internal class LogChatMessageCommandHandler : IRequestHandler<LogChatMessageComm
         };
 
         await _mediator.Send(saveChatMessageCommand, cancellationToken);
+
+        _logger.LogDebug(new { msg = "Chat message saved", request });
 
         return new LogChatMessageSuccess();
     }

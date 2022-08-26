@@ -9,6 +9,8 @@ namespace FirebotProxy.Domain.Adapters;
 
 internal class RemoveExpiredChatMessagesCommandHandler : IRequestHandler<PrimaryPorts.RemoveExpiredChatMessages.RemoveExpiredChatMessagesCommand, OneOf<RemoveExpiredChatMessagesSuccess, ErrorRepresentation>>
 {
+    private const int CutOffDays = 30;
+
     private readonly ILogger<RemoveExpiredChatMessagesCommandHandler> _logger;
     private readonly IMediator _mediator;
 
@@ -45,9 +47,13 @@ internal class RemoveExpiredChatMessagesCommandHandler : IRequestHandler<Primary
 
     private async Task<RemoveExpiredChatMessagesSuccess> HandleInternal(CancellationToken cancellationToken)
     {
-        var removeExpiredChatMessagesCommand = new SecondaryPorts.RemoveExpiredChatMessages.RemoveExpiredChatMessagesCommand { Cutoff = DateTime.UtcNow.AddDays(-30) };
+        _logger.LogDebug(new { msg = "Removing expired chat messages", CutOffDays });
+
+        var removeExpiredChatMessagesCommand = new SecondaryPorts.RemoveExpiredChatMessages.RemoveExpiredChatMessagesCommand { Cutoff = DateTime.UtcNow.AddDays(-CutOffDays) };
 
         await _mediator.Send(removeExpiredChatMessagesCommand, cancellationToken);
+
+        _logger.LogDebug(new { msg = "Expired chat messages were removed", CutOffDays });
 
         return new RemoveExpiredChatMessagesSuccess();
     }

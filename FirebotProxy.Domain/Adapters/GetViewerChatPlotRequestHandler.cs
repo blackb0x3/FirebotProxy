@@ -35,12 +35,17 @@ internal class GetViewerChatPlotRequestHandler : IRequestHandler<GetViewerChatPl
 
         try
         {
+            _logger.LogDebug(new { msg = "Validating request", request, requestType = nameof(GetViewerChatPlotRequest) });
+
             var validationResult = await _validator.ValidateAsync(request, cancellationToken);
 
             if (!validationResult.IsValid)
             {
+                _logger.LogWarning(new { msg = "Request determined to be invalid", request, requestType = nameof(GetViewerChatPlotRequest), validationResult });
                 return new ValidationRepresentation(validationResult);
             }
+
+            _logger.LogDebug(new { msg = "Request is valid", request, requestType = nameof(GetViewerChatPlotRequest) });
 
             var result = await HandleInternal(request, cancellationToken);
 
@@ -69,15 +74,20 @@ internal class GetViewerChatPlotRequestHandler : IRequestHandler<GetViewerChatPl
     private async Task<OneOf<GetViewerChatPlotResponse, ValidationRepresentation>> HandleInternal(GetViewerChatPlotRequest request,
         CancellationToken cancellationToken)
     {
+        _logger.LogDebug(new { msg = "Generating viewer chat plot", request });
         var getChatMessagesBySenderQuery = new GetChatMessagesBySenderQuery { SenderUsername = request.ViewerUsername };
 
+        _logger.LogDebug(new { msg = "Retrieving chat messages for user", request });
         var chatMessages = await _mediator.Send(getChatMessagesBySenderQuery, cancellationToken);
 
         // no point continuing if the viewer has no messages
         if (!chatMessages.Any())
         {
+            _logger.LogWarning(new { msg = "No chat messages to produce chat plot from!", request });
             return new ValidationRepresentation($"Viewer {request.ViewerUsername} has not posted to chat.");
         }
+
+        _logger.LogDebug(new { msg = "Grouping chat messages by date", request });
 
         var dateGroupedMessages = chatMessages.GroupBy(cm => cm.Timestamp.Date.ToString(Iso8601DateFormat))
             .OrderBy(grp => grp.Key)
@@ -86,10 +96,15 @@ internal class GetViewerChatPlotRequestHandler : IRequestHandler<GetViewerChatPl
         // no point continuing if the viewer doesn't have enough days of posts to make a meaningful chart
         if (!ViewerHasAtLeastTwoDaysOfPosts(dateGroupedMessages))
         {
+            _logger.LogWarning(new { msg = "Not enough chat messages to produce chat plot from!", request });
             return new ValidationRepresentation($"Viewer {request.ViewerUsername} does not have at least 2 days of posts.");
         }
 
+        _logger.LogDebug(new { msg = "Generating QuickChart payload", request });
+
         var chart = CreateQuickChartPayload(dateGroupedMessages, request.ViewerUsername, request.ChartType);
+
+        _logger.LogDebug(new { msg = "Generating URL from QuickChart payload", request });
 
         var url = chart.GetShortUrl();
 

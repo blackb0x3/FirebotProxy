@@ -57,17 +57,22 @@ internal class RemoveMessagesOfBannedViewerCommandHandler : IRequestHandler<Remo
 
     private async Task<OneOf<RemoveMessagesOfBannedViewerSuccess, ValidationRepresentation>> HandleInternal(RemoveMessagesOfBannedViewerCommand request, CancellationToken cancellationToken)
     {
+        _logger.LogDebug(new { msg = "Validating request", request, requestType = nameof(RemoveMessagesOfBannedViewerCommand) });
+
         var validationResult = await _validator.ValidateAsync(request, cancellationToken);
 
         if (!validationResult.IsValid)
         {
+            _logger.LogWarning(new { msg = "Request determined to be invalid", request, requestType = nameof(RemoveMessagesOfBannedViewerCommand), validationResult });
             return new ValidationRepresentation(validationResult);
         }
 
+        _logger.LogDebug(new { msg = "Removing chat messages via secondary port", request });
         var removeMessagesByUsernameCommand = new RemoveMessagesByUsernameCommand { SenderUsername = request.BannedViewerUsername };
 
         await _mediator.Send(removeMessagesByUsernameCommand, cancellationToken);
 
+        _logger.LogDebug(new { msg = "Chat messages removed", request });
         return new RemoveMessagesOfBannedViewerSuccess();
     }
 }

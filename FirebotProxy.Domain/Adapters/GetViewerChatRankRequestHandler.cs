@@ -50,14 +50,20 @@ internal class GetViewerChatRankRequestHandler : IRequestHandler<GetViewerChatRa
 
     private async Task<GetViewerChatRankResponse> HandleInternal(GetViewerChatRankRequest request, CancellationToken cancellationToken)
     {
+        _logger.LogDebug(new { msg = "Retrieving ALL chat messages from storage", request });
         var allMessages = await _mediator.Send(new GetAllChatMessagesQuery(), cancellationToken);
+
+        _logger.LogDebug(new { msg = "Counting number of viewer messages", request });
         var viewerMsgCount = allMessages.Count(cm => string.Equals(cm.SenderUsername, request.ViewerUsername));
+
+        _logger.LogDebug(new { msg = "Make a leaderboard and rank by message count", request });
         var userMsgCountLookup = allMessages.GroupBy(cm => cm.SenderUsername)
             .ToDictionary(grp => grp.Key, grp => grp.Count())
             .OrderByDescending(x => x.Value)
             .Select(x => x.Key)
             .ToList();
 
+        _logger.LogDebug(new { msg = "Determining viewer position", request });
         var viewerRankPosition = userMsgCountLookup.IndexOf(request.ViewerUsername) + 1;
 
         return new GetViewerChatRankResponse
