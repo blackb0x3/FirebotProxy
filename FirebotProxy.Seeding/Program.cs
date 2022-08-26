@@ -27,7 +27,7 @@ async Task RunOptions(Options options)
     var msgFaker = new AutoFaker<ChatMessage>();
     msgFaker.RuleFor(cm => cm.SenderUsername, faker => faker.PickRandom(usernamesToPickFrom));
     msgFaker.RuleFor(cm => cm.Timestamp, faker => faker.Date.Between(options.EarliestTimestamp ?? DateTime.Today.AddMonths(-1), DateTime.Today));
-    msgFaker.RuleFor(cm => cm.Content, faker => string.Join(". ", faker.Lorem.Sentences(faker.Random.Int(min: 0, max: 3))));
+    msgFaker.RuleFor(cm => cm.Content, faker => string.Join(". ", faker.Lorem.Sentences(faker.Random.Int(min: 1, max: 3))));
 
     const int batchSize = 10000;
     var totalBatches = options.AmountToGenerate / batchSize;
