@@ -35,7 +35,7 @@ internal class GetViewerChatPlotRequestHandler : IRequestHandler<GetViewerChatPl
 
         try
         {
-            _logger.LogDebug(new { msg = "Validating request", request, requestType = nameof(GetViewerChatPlotRequest) });
+            _logger.LogInfo(new { msg = "Validating request", request, requestType = nameof(GetViewerChatPlotRequest) });
 
             var validationResult = await _validator.ValidateAsync(request, cancellationToken);
 
@@ -45,7 +45,7 @@ internal class GetViewerChatPlotRequestHandler : IRequestHandler<GetViewerChatPl
                 return new ValidationRepresentation(validationResult);
             }
 
-            _logger.LogDebug(new { msg = "Request is valid", request, requestType = nameof(GetViewerChatPlotRequest) });
+            _logger.LogInfo(new { msg = "Request is valid", request, requestType = nameof(GetViewerChatPlotRequest) });
 
             var result = await HandleInternal(request, cancellationToken);
 
@@ -74,10 +74,10 @@ internal class GetViewerChatPlotRequestHandler : IRequestHandler<GetViewerChatPl
     private async Task<OneOf<GetViewerChatPlotResponse, ValidationRepresentation>> HandleInternal(GetViewerChatPlotRequest request,
         CancellationToken cancellationToken)
     {
-        _logger.LogDebug(new { msg = "Generating viewer chat plot", request });
+        _logger.LogInfo(new { msg = "Generating viewer chat plot", request });
         var getChatMessagesBySenderQuery = new GetChatMessagesBySenderQuery { SenderUsername = request.ViewerUsername };
 
-        _logger.LogDebug(new { msg = "Retrieving chat messages for user", request });
+        _logger.LogInfo(new { msg = "Retrieving chat messages for user", request });
         var chatMessages = await _mediator.Send(getChatMessagesBySenderQuery, cancellationToken);
 
         // no point continuing if the viewer has no messages
@@ -87,7 +87,7 @@ internal class GetViewerChatPlotRequestHandler : IRequestHandler<GetViewerChatPl
             return new ValidationRepresentation($"Viewer {request.ViewerUsername} has not posted to chat.");
         }
 
-        _logger.LogDebug(new { msg = "Grouping chat messages by date", request });
+        _logger.LogInfo(new { msg = "Grouping chat messages by date", request });
 
         var dateGroupedMessages = chatMessages.GroupBy(cm => cm.Timestamp.Date.ToString(Iso8601DateFormat))
             .OrderBy(grp => grp.Key)
@@ -100,11 +100,11 @@ internal class GetViewerChatPlotRequestHandler : IRequestHandler<GetViewerChatPl
             return new ValidationRepresentation($"Viewer {request.ViewerUsername} does not have at least 2 days of posts.");
         }
 
-        _logger.LogDebug(new { msg = "Generating QuickChart payload", request });
+        _logger.LogInfo(new { msg = "Generating QuickChart payload", request });
 
         var chart = CreateQuickChartPayload(dateGroupedMessages, request.ViewerUsername, request.ChartType);
 
-        _logger.LogDebug(new { msg = "Generating URL from QuickChart payload", request });
+        _logger.LogInfo(new { msg = "Generating URL from QuickChart payload", request });
 
         var url = chart.GetShortUrl();
 

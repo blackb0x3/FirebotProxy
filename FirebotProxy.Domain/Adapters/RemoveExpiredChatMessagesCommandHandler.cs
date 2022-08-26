@@ -47,13 +47,13 @@ internal class RemoveExpiredChatMessagesCommandHandler : IRequestHandler<Primary
 
     private async Task<RemoveExpiredChatMessagesSuccess> HandleInternal(CancellationToken cancellationToken)
     {
-        _logger.LogDebug(new { msg = "Removing expired chat messages", CutOffDays });
+        _logger.LogInfo(new { msg = "Removing expired chat messages", CutOffDays });
 
         var removeExpiredChatMessagesCommand = new SecondaryPorts.RemoveExpiredChatMessages.RemoveExpiredChatMessagesCommand { Cutoff = DateTime.UtcNow.AddDays(-CutOffDays) };
 
         await _mediator.Send(removeExpiredChatMessagesCommand, cancellationToken);
 
-        _logger.LogDebug(new { msg = "Expired chat messages were removed", CutOffDays });
+        _logger.LogInfo(new { msg = "Expired chat messages were removed", CutOffDays });
 
         return new RemoveExpiredChatMessagesSuccess();
     }
