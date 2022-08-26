@@ -10,6 +10,10 @@ public enum ChartType
     HorizontalBar,
     [Description("line")]
     Line,
+    [Description("scatter")]
+    Scatter,
+    /*
+     * TODO fix single colour issue on these chart types
     [Description("radar")]
     Radar,
     [Description("pie")]
@@ -17,7 +21,5 @@ public enum ChartType
     [Description("doughnut")]
     Doughnut,
     [Description("polarArea")]
-    Polar,
-    [Description("scatter")]
-    Scatter,
+    Polar,*/
 }
