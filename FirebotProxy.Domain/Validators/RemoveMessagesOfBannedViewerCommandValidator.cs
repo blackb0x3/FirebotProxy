@@ -7,6 +7,9 @@ public class RemoveMessagesOfBannedViewerCommandValidator : AbstractValidator<Re
 {
     public RemoveMessagesOfBannedViewerCommandValidator()
     {
-        RuleFor(req => req.BannedViewerUsername).NotNull().NotEmpty();
+        RuleFor(req => req.BannedViewerUsername)
+            .NotNull()
+            .NotEmpty()
+            .WithMessage("Viewer username must not be null or empty.");
     }
 }
