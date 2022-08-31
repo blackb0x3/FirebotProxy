@@ -20,6 +20,15 @@ public class A_GetViewerChatRank_Request_Handler : TestFixtureBase
         _mediator = new MediatRFactory(typeof(A_GetViewerChatRank_Request_Handler).Assembly)
             .AddTransientHandler(new FakeGetChatMessageLeaderboardQueryHandler(false))
             .Build();
+
+        var handler = new GetViewerChatRankRequestHandler(new NullLogger<GetViewerChatRankRequestHandler>(), _mediator);
+
+        var response = await handler.Handle(new GetViewerChatRankRequest { ViewerUsername = "test_viewer" }, CancellationToken.None);
+
+        response.IsT0.Should().BeTrue();
+
+        response.AsT0.MessageCount.Should().Be(15);
+        response.AsT0.RankPosition.Should().Be("1st");
     }
 
     [Test]

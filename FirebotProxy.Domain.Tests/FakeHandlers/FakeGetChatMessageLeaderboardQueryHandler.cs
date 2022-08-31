@@ -5,7 +5,7 @@ using MediatR;
 
 namespace FirebotProxy.Domain.Tests.FakeHandlers;
 
-internal class FakeGetChatMessageLeaderboardQueryHandler : IRequestHandler<GetChatMessageLeaderboardQuery, IReadOnlyCollection<ChatMessage>>
+internal class FakeGetChatMessageLeaderboardQueryHandler : IRequestHandler<GetChatMessageLeaderboardQuery, IQueryable<KeyValuePair<string, int>>>
 {
     private readonly List<ChatMessage> ChatMessages = new()
     {
@@ -37,13 +37,18 @@ internal class FakeGetChatMessageLeaderboardQueryHandler : IRequestHandler<GetCh
         _shouldThrow = shouldThrow;
     }
 
-    public async Task<IReadOnlyCollection<ChatMessage>> Handle(GetChatMessageLeaderboardQuery request, CancellationToken cancellationToken)
+    public async Task<IQueryable<KeyValuePair<string, int>>> Handle(GetChatMessageLeaderboardQuery request, CancellationToken cancellationToken)
     {
         if (_shouldThrow)
         {
             throw new Exception();
         }
 
-        return await Task.FromResult(ChatMessages);
+        var x = ChatMessages.AsQueryable()
+            .GroupBy(cm => cm.SenderUsername)
+            .OrderByDescending(grp => grp.Count())
+            .Select(grp => new KeyValuePair<string, int>(grp.Key, grp.Count()));
+
+        return await Task.FromResult(x);
     }
 }

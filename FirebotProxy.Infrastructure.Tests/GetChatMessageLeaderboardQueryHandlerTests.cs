@@ -37,6 +37,10 @@ public class A_GetChatMessageLeaderboard_Query_Handler : TestFixtureBase
 
         var resp = await handler.Handle(new GetChatMessageLeaderboardQuery(), CancellationToken.None);
 
-        resp.Count.Should().Be(messagesToAdd);
+        resp.ToDictionary(kvp => kvp.Key, kvp => kvp.Value)
+            .Keys
+            .Count
+            .Should()
+            .Be(1);
     }
 }

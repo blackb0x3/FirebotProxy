@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace FirebotProxy.Infrastructure.Adapters;
 
-internal class GetChatMessageLeaderboardQueryHandler : IRequestHandler<GetChatMessageLeaderboardQuery, IOrderedQueryable<KeyValuePair<string, int>>>
+internal class GetChatMessageLeaderboardQueryHandler : IRequestHandler<GetChatMessageLeaderboardQuery, IQueryable<KeyValuePair<string, int>>>
 {
     private readonly ILogger<GetChatMessageLeaderboardQueryHandler> _logger;
     private readonly FirebotProxyContext _context;
@@ -21,13 +21,13 @@ internal class GetChatMessageLeaderboardQueryHandler : IRequestHandler<GetChatMe
         _context = context;
     }
 
-    public async Task<IOrderedQueryable<KeyValuePair<string, int>>> Handle(GetChatMessageLeaderboardQuery request, CancellationToken cancellationToken)
+    public async Task<IQueryable<KeyValuePair<string, int>>> Handle(GetChatMessageLeaderboardQuery request, CancellationToken cancellationToken)
     {
-        return await Task.FromResult(
-            _context.ChatMessages
-                .GroupBy(cm => cm.SenderUsername)
-                .Select(grp => new KeyValuePair<string, int>(grp.Key, grp.Count()))
-                .OrderByDescending(kvp => kvp.Value)
-        );
+        var x = _context.ChatMessages
+            .GroupBy(cm => cm.SenderUsername)
+            .OrderByDescending(grp => grp.Count())
+            .Select(grp => new KeyValuePair<string, int>(grp.Key, grp.Count()));
+
+        return await Task.FromResult(x);
     }
 }

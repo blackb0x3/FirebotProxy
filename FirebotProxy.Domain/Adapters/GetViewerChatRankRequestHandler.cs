@@ -56,7 +56,7 @@ internal class GetViewerChatRankRequestHandler : IRequestHandler<GetViewerChatRa
         _logger.LogInfo(new { msg = "Looking up viewer in the leaderboard" });
 
         // assume first place to start with
-        var position = 0;
+        var position = 1;
 
         foreach (var entry in leaderboard)
         {
