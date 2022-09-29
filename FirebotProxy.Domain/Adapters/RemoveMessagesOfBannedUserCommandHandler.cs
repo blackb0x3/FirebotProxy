@@ -9,15 +9,15 @@ using OneOf;
 
 namespace FirebotProxy.Domain.Adapters;
 
-internal class RemoveMessagesOfBannedViewerCommandHandler : IRequestHandler<RemoveMessagesOfBannedViewerCommand,
+internal class RemoveMessagesOfBannedViewerRequestHandler : IRequestHandler<RemoveMessagesOfBannedViewerRequest,
     OneOf<RemoveMessagesOfBannedViewerSuccess, ValidationRepresentation, ErrorRepresentation>>
 {
-    private readonly ILogger<RemoveMessagesOfBannedViewerCommandHandler> _logger;
+    private readonly ILogger<RemoveMessagesOfBannedViewerRequestHandler> _logger;
     private readonly IMediator _mediator;
-    private readonly IValidator<RemoveMessagesOfBannedViewerCommand> _validator;
+    private readonly IValidator<RemoveMessagesOfBannedViewerRequest> _validator;
 
-    public RemoveMessagesOfBannedViewerCommandHandler(ILogger<RemoveMessagesOfBannedViewerCommandHandler> logger,
-        IMediator mediator, IValidator<RemoveMessagesOfBannedViewerCommand> validator)
+    public RemoveMessagesOfBannedViewerRequestHandler(ILogger<RemoveMessagesOfBannedViewerRequestHandler> logger,
+        IMediator mediator, IValidator<RemoveMessagesOfBannedViewerRequest> validator)
     {
         _logger = logger;
         _mediator = mediator;
@@ -25,9 +25,9 @@ internal class RemoveMessagesOfBannedViewerCommandHandler : IRequestHandler<Remo
     }
 
     public async Task<OneOf<RemoveMessagesOfBannedViewerSuccess, ValidationRepresentation, ErrorRepresentation>> Handle(
-        RemoveMessagesOfBannedViewerCommand request, CancellationToken cancellationToken)
+        RemoveMessagesOfBannedViewerRequest request, CancellationToken cancellationToken)
     {
-        _logger.LogInfo(new { msg = "Handler called", request, handler = nameof(RemoveMessagesOfBannedViewerCommandHandler) });
+        _logger.LogInfo(new { msg = "Handler called", request, handler = nameof(RemoveMessagesOfBannedViewerRequestHandler) });
 
         try
         {
@@ -46,7 +46,7 @@ internal class RemoveMessagesOfBannedViewerCommandHandler : IRequestHandler<Remo
             {
                 msg,
                 request,
-                handler = nameof(RemoveMessagesOfBannedViewerCommandHandler),
+                handler = nameof(RemoveMessagesOfBannedViewerRequestHandler),
                 exception = e.Message,
                 e.StackTrace
             });
@@ -55,22 +55,22 @@ internal class RemoveMessagesOfBannedViewerCommandHandler : IRequestHandler<Remo
         }
     }
 
-    private async Task<OneOf<RemoveMessagesOfBannedViewerSuccess, ValidationRepresentation>> HandleInternal(RemoveMessagesOfBannedViewerCommand request, CancellationToken cancellationToken)
+    private async Task<OneOf<RemoveMessagesOfBannedViewerSuccess, ValidationRepresentation>> HandleInternal(RemoveMessagesOfBannedViewerRequest request, CancellationToken cancellationToken)
     {
-        _logger.LogInfo(new { msg = "Validating request", request, requestType = nameof(RemoveMessagesOfBannedViewerCommand) });
+        _logger.LogInfo(new { msg = "Validating request", request, requestType = nameof(RemoveMessagesOfBannedViewerRequest) });
 
         var validationResult = await _validator.ValidateAsync(request, cancellationToken);
 
         if (!validationResult.IsValid)
         {
-            _logger.LogWarning(new { msg = "Request determined to be invalid", request, requestType = nameof(RemoveMessagesOfBannedViewerCommand), validationResult });
+            _logger.LogWarning(new { msg = "Request determined to be invalid", request, requestType = nameof(RemoveMessagesOfBannedViewerRequest), validationResult });
             return new ValidationRepresentation(validationResult);
         }
 
         _logger.LogInfo(new { msg = "Removing chat messages via secondary port", request });
-        var removeMessagesByUsernameCommand = new RemoveMessagesByUsernameCommand { SenderUsername = request.BannedViewerUsername };
+        var removeMessagesByUsernameRequest = new RemoveMessagesByUsernameCommand { SenderUsername = request.BannedViewerUsername };
 
-        await _mediator.Send(removeMessagesByUsernameCommand, cancellationToken);
+        await _mediator.Send(removeMessagesByUsernameRequest, cancellationToken);
 
         _logger.LogInfo(new { msg = "Chat messages removed", request });
         return new RemoveMessagesOfBannedViewerSuccess();

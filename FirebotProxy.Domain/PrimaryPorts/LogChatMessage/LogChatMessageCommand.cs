@@ -4,7 +4,7 @@ using OneOf;
 
 namespace FirebotProxy.Domain.PrimaryPorts.LogChatMessage;
 
-public class LogChatMessageCommand : IRequest<OneOf<LogChatMessageSuccess, ErrorRepresentation>>
+public class LogChatMessageRequest : IRequest<OneOf<LogChatMessageSuccess, ErrorRepresentation>>
 {
     public string Content { get; set; }
 

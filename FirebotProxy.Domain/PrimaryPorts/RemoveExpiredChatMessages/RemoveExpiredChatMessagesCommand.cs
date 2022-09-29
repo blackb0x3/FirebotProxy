@@ -4,6 +4,6 @@ using OneOf;
 
 namespace FirebotProxy.Domain.PrimaryPorts.RemoveExpiredChatMessages;
 
-public class RemoveExpiredChatMessagesCommand : IRequest<OneOf<RemoveExpiredChatMessagesSuccess, ErrorRepresentation>>
+public class RemoveExpiredChatMessagesRequest : IRequest<OneOf<RemoveExpiredChatMessagesSuccess, ErrorRepresentation>>
 {
 }

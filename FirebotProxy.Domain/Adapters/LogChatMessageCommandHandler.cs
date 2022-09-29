@@ -9,20 +9,20 @@ using OneOf;
 
 namespace FirebotProxy.Domain.Adapters;
 
-internal class LogChatMessageCommandHandler : IRequestHandler<LogChatMessageCommand, OneOf<LogChatMessageSuccess, ErrorRepresentation>>
+internal class LogChatMessageRequestHandler : IRequestHandler<LogChatMessageRequest, OneOf<LogChatMessageSuccess, ErrorRepresentation>>
 {
-    private readonly ILogger<LogChatMessageCommandHandler> _logger;
+    private readonly ILogger<LogChatMessageRequestHandler> _logger;
     private readonly IMediator _mediator;
 
-    public LogChatMessageCommandHandler(ILogger<LogChatMessageCommandHandler> logger, IMediator mediator)
+    public LogChatMessageRequestHandler(ILogger<LogChatMessageRequestHandler> logger, IMediator mediator)
     {
         _logger = logger;
         _mediator = mediator;
     }
 
-    public async Task<OneOf<LogChatMessageSuccess, ErrorRepresentation>> Handle(LogChatMessageCommand request, CancellationToken cancellationToken)
+    public async Task<OneOf<LogChatMessageSuccess, ErrorRepresentation>> Handle(LogChatMessageRequest request, CancellationToken cancellationToken)
     {
-        _logger.LogInfo(new { msg = "Handler called", request, handler = nameof(LogChatMessageCommandHandler) });
+        _logger.LogInfo(new { msg = "Handler called", request, handler = nameof(LogChatMessageRequestHandler) });
 
         try
         {
@@ -36,7 +36,7 @@ internal class LogChatMessageCommandHandler : IRequestHandler<LogChatMessageComm
             {
                 msg,
                 request,
-                handler = nameof(LogChatMessageCommandHandler),
+                handler = nameof(LogChatMessageRequestHandler),
                 exception = e.Message,
                 e.StackTrace
             });
@@ -45,11 +45,11 @@ internal class LogChatMessageCommandHandler : IRequestHandler<LogChatMessageComm
         }
     }
 
-    private async Task<LogChatMessageSuccess> HandleInternal(LogChatMessageCommand request, CancellationToken cancellationToken)
+    private async Task<LogChatMessageSuccess> HandleInternal(LogChatMessageRequest request, CancellationToken cancellationToken)
     {
         _logger.LogInfo(new { msg = "Saving chat message to storage", request });
 
-        var saveChatMessageCommand = new SaveChatMessageCommand
+        var saveChatMessageRequest = new SaveChatMessageCommand
         {
             ChatMessage = new ChatMessage
             {
@@ -59,7 +59,7 @@ internal class LogChatMessageCommandHandler : IRequestHandler<LogChatMessageComm
             }
         };
 
-        await _mediator.Send(saveChatMessageCommand, cancellationToken);
+        await _mediator.Send(saveChatMessageRequest, cancellationToken);
 
         _logger.LogInfo(new { msg = "Chat message saved", request });
 

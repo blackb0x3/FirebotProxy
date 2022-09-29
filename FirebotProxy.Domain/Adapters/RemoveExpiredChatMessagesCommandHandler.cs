@@ -7,22 +7,22 @@ using OneOf;
 
 namespace FirebotProxy.Domain.Adapters;
 
-internal class RemoveExpiredChatMessagesCommandHandler : IRequestHandler<PrimaryPorts.RemoveExpiredChatMessages.RemoveExpiredChatMessagesCommand, OneOf<RemoveExpiredChatMessagesSuccess, ErrorRepresentation>>
+internal class RemoveExpiredChatMessagesRequestHandler : IRequestHandler<PrimaryPorts.RemoveExpiredChatMessages.RemoveExpiredChatMessagesRequest, OneOf<RemoveExpiredChatMessagesSuccess, ErrorRepresentation>>
 {
     private const int CutOffDays = 30;
 
-    private readonly ILogger<RemoveExpiredChatMessagesCommandHandler> _logger;
+    private readonly ILogger<RemoveExpiredChatMessagesRequestHandler> _logger;
     private readonly IMediator _mediator;
 
-    public RemoveExpiredChatMessagesCommandHandler(ILogger<RemoveExpiredChatMessagesCommandHandler> logger, IMediator mediator)
+    public RemoveExpiredChatMessagesRequestHandler(ILogger<RemoveExpiredChatMessagesRequestHandler> logger, IMediator mediator)
     {
         _logger = logger;
         _mediator = mediator;
     }
 
-    public async Task<OneOf<RemoveExpiredChatMessagesSuccess, ErrorRepresentation>> Handle(PrimaryPorts.RemoveExpiredChatMessages.RemoveExpiredChatMessagesCommand request, CancellationToken cancellationToken)
+    public async Task<OneOf<RemoveExpiredChatMessagesSuccess, ErrorRepresentation>> Handle(PrimaryPorts.RemoveExpiredChatMessages.RemoveExpiredChatMessagesRequest request, CancellationToken cancellationToken)
     {
-        _logger.LogInfo(new { msg = "Handler called", request, handler = nameof(RemoveExpiredChatMessagesCommandHandler) });
+        _logger.LogInfo(new { msg = "Handler called", request, handler = nameof(RemoveExpiredChatMessagesRequestHandler) });
 
         try
         {
@@ -36,7 +36,7 @@ internal class RemoveExpiredChatMessagesCommandHandler : IRequestHandler<Primary
             {
                 msg,
                 request,
-                handler = nameof(RemoveExpiredChatMessagesCommandHandler),
+                handler = nameof(RemoveExpiredChatMessagesRequestHandler),
                 exception = e.Message,
                 e.StackTrace
             });
@@ -49,9 +49,9 @@ internal class RemoveExpiredChatMessagesCommandHandler : IRequestHandler<Primary
     {
         _logger.LogInfo(new { msg = "Removing expired chat messages", CutOffDays });
 
-        var removeExpiredChatMessagesCommand = new SecondaryPorts.RemoveExpiredChatMessages.RemoveExpiredChatMessagesCommand { Cutoff = DateTime.UtcNow.AddDays(-CutOffDays) };
+        var removeExpiredChatMessagesRequest = new SecondaryPorts.RemoveExpiredChatMessages.RemoveExpiredChatMessagesCommand { Cutoff = DateTime.UtcNow.AddDays(-CutOffDays) };
 
-        await _mediator.Send(removeExpiredChatMessagesCommand, cancellationToken);
+        await _mediator.Send(removeExpiredChatMessagesRequest, cancellationToken);
 
         _logger.LogInfo(new { msg = "Expired chat messages were removed", CutOffDays });
 

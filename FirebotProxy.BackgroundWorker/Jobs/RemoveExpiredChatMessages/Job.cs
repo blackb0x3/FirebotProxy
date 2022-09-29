@@ -18,7 +18,7 @@ public class RemoveExpiredChatMessagesJob : IJob
 
     public async Task Execute(IJobExecutionContext context)
     {
-        var removeExpiredMessagesCommand = new RemoveExpiredChatMessagesCommand();
+        var removeExpiredMessagesCommand = new RemoveExpiredChatMessagesRequest();
 
         var result = await _mediator.Send(removeExpiredMessagesCommand);
 

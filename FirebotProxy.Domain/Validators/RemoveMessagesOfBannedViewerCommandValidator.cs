@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace FirebotProxy.Domain.Validators;
 
-public class RemoveMessagesOfBannedViewerCommandValidator : AbstractValidator<RemoveMessagesOfBannedViewerCommand>
+public class RemoveMessagesOfBannedViewerRequestValidator : AbstractValidator<RemoveMessagesOfBannedViewerRequest>
 {
-    public RemoveMessagesOfBannedViewerCommandValidator()
+    public RemoveMessagesOfBannedViewerRequestValidator()
     {
         RuleFor(req => req.BannedViewerUsername)
             .NotNull()

@@ -31,7 +31,7 @@ internal class GetViewerChatPlotRequestHandler : IRequestHandler<GetViewerChatPl
     public async Task<OneOf<GetViewerChatPlotResponse, ValidationRepresentation, ErrorRepresentation>> Handle(
         GetViewerChatPlotRequest request, CancellationToken cancellationToken)
     {
-        _logger.LogInfo(new { msg = "Handler called", request, handler = nameof(LogChatMessageCommandHandler) });
+        _logger.LogInfo(new { msg = "Handler called", request, handler = nameof(LogChatMessageRequestHandler) });
 
         try
         {
