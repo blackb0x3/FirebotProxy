@@ -31,6 +31,7 @@ public class EventsController : ProxyControllerBase
 
         return resp.Match(
             _ => Results.Ok("Chat message logged"),
+            invalidRequest => Results.BadRequest(invalidRequest),
             error => Results.Problem(error.Message, statusCode: 500)
         );
     }

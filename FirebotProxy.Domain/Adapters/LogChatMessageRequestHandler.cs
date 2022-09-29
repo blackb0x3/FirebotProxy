@@ -3,26 +3,36 @@ using FirebotProxy.Domain.PrimaryPorts.LogChatMessage;
 using FirebotProxy.Domain.Representations;
 using FirebotProxy.Extensions;
 using FirebotProxy.SecondaryPorts.SaveChatMessage;
+using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using OneOf;
 
 namespace FirebotProxy.Domain.Adapters;
 
-internal class LogChatMessageRequestHandler : IRequestHandler<LogChatMessageRequest, OneOf<LogChatMessageSuccess, ErrorRepresentation>>
+internal class LogChatMessageRequestHandler : IRequestHandler<LogChatMessageRequest, OneOf<LogChatMessageSuccess, ValidationRepresentation, ErrorRepresentation>>
 {
     private readonly ILogger<LogChatMessageRequestHandler> _logger;
+    private readonly IValidator<LogChatMessageRequest> _validator;
     private readonly IMediator _mediator;
 
-    public LogChatMessageRequestHandler(ILogger<LogChatMessageRequestHandler> logger, IMediator mediator)
+    public LogChatMessageRequestHandler(ILogger<LogChatMessageRequestHandler> logger, IValidator<LogChatMessageRequest> validator, IMediator mediator)
     {
         _logger = logger;
+        _validator = validator;
         _mediator = mediator;
     }
 
-    public async Task<OneOf<LogChatMessageSuccess, ErrorRepresentation>> Handle(LogChatMessageRequest request, CancellationToken cancellationToken)
+    public async Task<OneOf<LogChatMessageSuccess, ValidationRepresentation, ErrorRepresentation>> Handle(LogChatMessageRequest request, CancellationToken cancellationToken)
     {
         _logger.LogInfo(new { msg = "Handler called", request, handler = nameof(LogChatMessageRequestHandler) });
+
+        var validationResult = await _validator.ValidateAsync(request, cancellationToken);
+
+        if (!validationResult.IsValid)
+        {
+            return new ValidationRepresentation(validationResult);
+        }
 
         try
         {
