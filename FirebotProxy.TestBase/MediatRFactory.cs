@@ -18,7 +18,7 @@ public class MediatRFactory
         _services.AddMediatR(assembly);
     }
 
-    public MediatRFactory AddTransientHandler<T, T2>(IRequestHandler<T, T2> instance) where T : class, IRequest<T2>
+    public MediatRFactory AddSingletonHandler<T, T2>(IRequestHandler<T, T2> instance) where T : class, IRequest<T2>
     {
         _services.AddTransient((s) => instance);
         return this;

@@ -18,7 +18,7 @@ public class A_GetViewerChatRank_Request_Handler : TestFixtureBase
     public async Task Returns_A_GetViewerChatRank_Response()
     {
         _mediator = new MediatRFactory(typeof(A_GetViewerChatRank_Request_Handler).Assembly)
-            .AddTransientHandler(new FakeGetChatMessageLeaderboardQueryHandler(false))
+            .AddSingletonHandler(new FakeGetChatMessageLeaderboardQueryHandler(false))
             .Build();
 
         var handler = new GetViewerChatRankRequestHandler(new NullLogger<GetViewerChatRankRequestHandler>(), _mediator);
@@ -35,7 +35,7 @@ public class A_GetViewerChatRank_Request_Handler : TestFixtureBase
     public async Task Returns_An_Error_Representation_Upon_Catching_An_Exception()
     {
         _mediator = new MediatRFactory(typeof(A_GetViewerChatRank_Request_Handler).Assembly)
-            .AddTransientHandler(new FakeGetChatMessageLeaderboardQueryHandler(true))
+            .AddSingletonHandler(new FakeGetChatMessageLeaderboardQueryHandler(true))
             .Build();
 
         var handler = new GetViewerChatRankRequestHandler(new NullLogger<GetViewerChatRankRequestHandler>(), _mediator);

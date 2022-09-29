@@ -22,7 +22,7 @@ public class A_GetViewerChatPlot_Request_Handler_Returns_A_Chat_Plot_For_A_Viewe
     public async Task When_The_Default_Chart_Type_Is_Supplied()
     {
         var mediator = new MediatRFactory(typeof(A_GetViewerChatPlot_Request_Handler_Returns_A_Chat_Plot_For_A_Viewer).Assembly)
-            .AddTransientHandler(new FakeGetChatMessagesBySenderQueryHandler("test_user", DateTime.UtcNow, DateTime.UtcNow.AddDays(10)))
+            .AddSingletonHandler(new FakeGetChatMessagesBySenderQueryHandler("test_user", DateTime.UtcNow, DateTime.UtcNow.AddDays(10)))
             .Build();
 
         var handler = new GetViewerChatPlotRequestHandler(new NullLogger<GetViewerChatPlotRequestHandler>(), mediator, new GetViewerChatPlotRequestValidator());
@@ -41,7 +41,7 @@ public class A_GetViewerChatPlot_Request_Handler_Returns_A_Chat_Plot_For_A_Viewe
     public async Task When_A_Valid_Chart_Type_That_Is_Not_The_Default_Is_Supplied(string validChartType)
     {
         var mediator = new MediatRFactory(typeof(A_GetViewerChatPlot_Request_Handler_Returns_A_Chat_Plot_For_A_Viewer).Assembly)
-            .AddTransientHandler(new FakeGetChatMessagesBySenderQueryHandler("test_user", DateTime.UtcNow, DateTime.UtcNow.AddDays(10)))
+            .AddSingletonHandler(new FakeGetChatMessagesBySenderQueryHandler("test_user", DateTime.UtcNow, DateTime.UtcNow.AddDays(10)))
             .Build();
 
         var handler = new GetViewerChatPlotRequestHandler(new NullLogger<GetViewerChatPlotRequestHandler>(), mediator, new GetViewerChatPlotRequestValidator());
@@ -65,7 +65,7 @@ public class A_GetViewerChatPlot_Request_Handler_Does_Not_Return_A_Chat_Plot_For
     public async Task When_The_Viewer_Username_Is_Not_Supplied(string viewerUsername)
     {
         var mediator = new MediatRFactory(typeof(A_GetViewerChatPlot_Request_Handler_Returns_A_Chat_Plot_For_A_Viewer).Assembly)
-            .AddTransientHandler(new FakeGetChatMessagesBySenderQueryHandler("test_user", DateTime.UtcNow, DateTime.UtcNow.AddDays(10)))
+            .AddSingletonHandler(new FakeGetChatMessagesBySenderQueryHandler("test_user", DateTime.UtcNow, DateTime.UtcNow.AddDays(10)))
             .Build();
 
         var handler = new GetViewerChatPlotRequestHandler(new NullLogger<GetViewerChatPlotRequestHandler>(), mediator, new GetViewerChatPlotRequestValidator());
@@ -86,7 +86,7 @@ public class A_GetViewerChatPlot_Request_Handler_Does_Not_Return_A_Chat_Plot_For
     public async Task When_The_Chart_Type_Is_Not_Provided(string chartType)
     {
         var mediator = new MediatRFactory(typeof(A_GetViewerChatPlot_Request_Handler_Returns_A_Chat_Plot_For_A_Viewer).Assembly)
-            .AddTransientHandler(new FakeGetChatMessagesBySenderQueryHandler("test_user", DateTime.UtcNow, DateTime.UtcNow.AddDays(10)))
+            .AddSingletonHandler(new FakeGetChatMessagesBySenderQueryHandler("test_user", DateTime.UtcNow, DateTime.UtcNow.AddDays(10)))
             .Build();
 
         var handler = new GetViewerChatPlotRequestHandler(new NullLogger<GetViewerChatPlotRequestHandler>(), mediator, new GetViewerChatPlotRequestValidator());
@@ -110,7 +110,7 @@ public class A_GetViewerChatPlot_Request_Handler_Does_Not_Return_A_Chat_Plot_For
     public async Task When_The_Provided_Chart_Type_Is_Invalid(string invalidChartType)
     {
         var mediator = new MediatRFactory(typeof(A_GetViewerChatPlot_Request_Handler_Returns_A_Chat_Plot_For_A_Viewer).Assembly)
-            .AddTransientHandler(new FakeGetChatMessagesBySenderQueryHandler("test_user", DateTime.UtcNow, DateTime.UtcNow.AddDays(10)))
+            .AddSingletonHandler(new FakeGetChatMessagesBySenderQueryHandler("test_user", DateTime.UtcNow, DateTime.UtcNow.AddDays(10)))
             .Build();
 
         var handler = new GetViewerChatPlotRequestHandler(new NullLogger<GetViewerChatPlotRequestHandler>(), mediator, new GetViewerChatPlotRequestValidator());
