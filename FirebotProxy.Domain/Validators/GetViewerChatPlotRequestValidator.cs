@@ -10,8 +10,7 @@ public class GetViewerChatPlotRequestValidator : AbstractValidator<GetViewerChat
     public GetViewerChatPlotRequestValidator()
     {
         RuleFor(req => req.ViewerUsername)
-            .NotNull()
-            .NotEmpty()
+            .SetValidator(new IsNullEmptyOrWhitespacePropertyValidator<GetViewerChatPlotRequest>())
             .WithMessage("Viewer username must not be null or empty.");
 
         RuleFor(req => req.ChartType)
