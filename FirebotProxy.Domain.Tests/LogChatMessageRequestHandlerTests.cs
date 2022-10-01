@@ -12,15 +12,13 @@ namespace FirebotProxy.Domain.Tests;
 
 public abstract class LogChatMessageRequestHandlerTestsBase
 {
-    protected static LogChatMessageRequest ConstructRequest(string messageContent, string senderUsername, DateTime timestamp)
-    {
-        return new LogChatMessageRequest
+    protected static LogChatMessageRequest ConstructRequest(string messageContent, string senderUsername, DateTime timestamp) =>
+        new()
         {
             Content = messageContent,
             SenderUsername = senderUsername,
             Timestamp = timestamp
         };
-    }
 }
 
 [TestFixture]
