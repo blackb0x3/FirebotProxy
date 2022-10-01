@@ -48,7 +48,7 @@ public class A_LogChatMessage_Request_Handler_Does_Not_Log_A_Chat_Message : LogC
     [TestCase(null)]
     [TestCase("")]
     [TestCase("   ")]
-    public async Task When_The_Message_Content_Is_Null_Or_Empty_Or_Pure_Whitespace(string messageContent)
+    public async Task When_The_Message_Content_Is_Not_Provided(string messageContent)
     {
         var mediator = new MediatRFactory(typeof(A_LogChatMessage_Request_Handler_Logs_A_Chat_Message).Assembly)
             .AddSingletonHandler(new FakeSaveChatMessageCommandHandler(false));
@@ -67,7 +67,7 @@ public class A_LogChatMessage_Request_Handler_Does_Not_Log_A_Chat_Message : LogC
     [TestCase(null)]
     [TestCase("")]
     [TestCase("   ")]
-    public async Task When_The_Sender_Username_Is_Null_Or_Empty_Or_Pure_Whitespace(string senderUsername)
+    public async Task When_The_Sender_Username_Is_Not_Provided(string senderUsername)
     {
         var mediator = new MediatRFactory(typeof(A_LogChatMessage_Request_Handler_Logs_A_Chat_Message).Assembly)
             .AddSingletonHandler(new FakeSaveChatMessageCommandHandler(false));
