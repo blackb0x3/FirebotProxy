@@ -19,6 +19,6 @@ public class FakeSaveChatMessageCommandHandler : IRequestHandler<SaveChatMessage
             throw new Exception($"test exception message from {nameof(FakeSaveChatMessageCommandHandler)}");
         }
 
-        return await Task.FromResult(Unit.Value);
+        return await Unit.Task;
     }
 }
