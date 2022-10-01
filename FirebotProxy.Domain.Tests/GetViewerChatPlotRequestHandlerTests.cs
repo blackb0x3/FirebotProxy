@@ -15,6 +15,7 @@ using NUnit.Framework;
 namespace FirebotProxy.Domain.Tests;
 
 [TestFixture]
+[Ignore("Sends real requests to QuickChart. So, if making changes, ensure these tests are executed locally, before pushing to VCS.")]
 public class A_GetViewerChatPlot_Request_Handler_Returns_A_Chat_Plot_For_A_Viewer
 {
     [Test]
