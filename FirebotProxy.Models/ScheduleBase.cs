@@ -4,9 +4,9 @@ namespace FirebotProxy.Models;
 
 public abstract class ScheduleBase : ISchedule
 {
-    public virtual int IntervalValue { get; }
+    public abstract int IntervalValue { get; }
 
-    public virtual IntervalUnit IntervalUnit { get; }
+    public abstract IntervalUnit IntervalUnit { get; }
 
     public virtual void Trigger(ITriggerConfigurator trigger)
     {
