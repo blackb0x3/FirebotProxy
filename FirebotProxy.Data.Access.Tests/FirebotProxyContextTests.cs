@@ -8,7 +8,7 @@ namespace FirebotProxy.Data.Access.Tests;
 [TestFixture]
 public class A_FirebotProxy_Database_Context
 {
-    private FirebotProxyContext _context;
+    private FirebotProxyContext _context = null!;
 
     [OneTimeSetUp]
     public void OneTimeSetUp()

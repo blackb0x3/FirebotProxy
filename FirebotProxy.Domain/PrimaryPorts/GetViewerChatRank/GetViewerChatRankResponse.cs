@@ -4,5 +4,5 @@ public class GetViewerChatRankResponse
 {
     public int MessageCount { get; set; }
 
-    public string RankPosition { get; set; }
+    public string RankPosition { get; set; } = null!;
 }

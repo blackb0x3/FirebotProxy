@@ -5,5 +5,5 @@ namespace FirebotProxy.SecondaryPorts.GetChatMessages;
 
 public class GetChatMessagesBySenderQuery : IRequest<IReadOnlyCollection<ChatMessage>>
 {
-    public string SenderUsername { get; set; }
+    public string SenderUsername { get; set; } = null!;
 }

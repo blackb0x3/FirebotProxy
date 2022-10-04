@@ -12,7 +12,7 @@ namespace FirebotProxy.Infrastructure.Tests;
 [TestFixture]
 public class A_RemoveExpiredChatMessages_Command_Handler : TestFixtureBase
 {
-    private FirebotProxyContext _context;
+    private FirebotProxyContext _context = null!;
 
     [Test]
     public async Task Removes_An_Expected_Number_Of_Expired_Chat_Messages()

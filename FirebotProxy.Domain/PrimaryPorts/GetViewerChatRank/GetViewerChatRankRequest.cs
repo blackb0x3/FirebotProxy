@@ -6,5 +6,5 @@ namespace FirebotProxy.Domain.PrimaryPorts.GetViewerChatRank;
 
 public class GetViewerChatRankRequest : IRequest<OneOf<GetViewerChatRankResponse, ErrorRepresentation>>
 {
-    public string ViewerUsername { get; set; }
+    public string ViewerUsername { get; set; } = null!;
 }

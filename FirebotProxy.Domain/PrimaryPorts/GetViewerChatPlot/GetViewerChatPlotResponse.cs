@@ -2,5 +2,5 @@ namespace FirebotProxy.Domain.PrimaryPorts.GetViewerChatPlot;
 
 public class GetViewerChatPlotResponse
 {
-    public string ChartUrl { get; set; }
+    public string ChartUrl { get; set; } = null!;
 }

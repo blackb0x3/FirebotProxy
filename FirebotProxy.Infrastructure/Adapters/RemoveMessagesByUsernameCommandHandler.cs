@@ -40,7 +40,7 @@ internal class RemoveMessagesByUsernameCommandHandler : IRequestHandler<RemoveMe
 
                 await transaction.CommitAsync(cancellationToken);
             }
-            catch (Exception e)
+            catch
             {
                 await transaction.RollbackAsync(cancellationToken);
 

@@ -5,5 +5,5 @@ namespace FirebotProxy.SecondaryPorts.SaveChatMessage;
 
 public class SaveChatMessageCommand : IRequest<Unit>
 {
-    public ChatMessage ChatMessage { get; set; }
+    public ChatMessage ChatMessage { get; set; } = null!;
 }

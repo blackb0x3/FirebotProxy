@@ -12,7 +12,7 @@ namespace FirebotProxy.Infrastructure.Tests;
 [TestFixture]
 public class A_GetChatMessagesBySender_Query_Handler : TestFixtureBase
 {
-    private FirebotProxyContext _context;
+    private FirebotProxyContext _context = null!;
 
     [Test]
     public async Task Returns_A_List_Of_Chat_Messages_Filtered_By_Viewer_Username()

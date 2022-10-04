@@ -12,7 +12,7 @@ namespace FirebotProxy.Domain.Tests;
 [TestFixture]
 public class A_GetViewerChatRank_Request_Handler : TestFixtureBase
 {
-    private IMediator _mediator;
+    private IMediator _mediator = null!;
 
     [Test]
     public async Task Returns_A_GetViewerChatRank_Response()

@@ -12,7 +12,7 @@ namespace FirebotProxy.Infrastructure.Tests;
 [TestFixture]
 public class A_SaveChatMessage_Command_Handler : TestFixtureBase
 {
-    private FirebotProxyContext _context;
+    private FirebotProxyContext _context = null!;
 
     [Test]
     public async Task Saves_A_Chat_Message()
