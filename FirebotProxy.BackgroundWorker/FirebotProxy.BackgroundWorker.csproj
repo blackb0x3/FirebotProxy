@@ -1,10 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk.Worker">
 
     <PropertyGroup>
+        <OutputType>exe</OutputType>
         <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <UserSecretsId>dotnet-FirebotProxy.BackgroundWorker-5450EB8F-3665-4F7E-8DE2-E701307F779E</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
