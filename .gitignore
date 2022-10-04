@@ -5,3 +5,4 @@ riderModule.iml
 /_ReSharper.Caches/
 .idea/
 FirebotProxy.sln.DotSettings.user
+artifacts-dotnet-releaser/
