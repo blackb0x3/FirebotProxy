@@ -56,10 +56,12 @@ jobs:
           # Delete output directories
           rm -rf "$api_release_name"
           rm -rf "$bw_release_name"
-
+          
       - name: Publish A New GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          files: "FirebotProxy*"
+          prerelease: endsWith(tag, '-preview')
+          files: "FirebotProxy-*"
+          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
