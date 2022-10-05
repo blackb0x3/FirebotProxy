@@ -60,7 +60,7 @@ jobs:
       - name: Publish A New GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          prerelease: endsWith(tag, '-preview')
+          prerelease: endsWith($GITHUB_REF_NAME, '-preview')
           files: "FirebotProxy-*"
           generate_release_notes: true
         env:
