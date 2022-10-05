@@ -1,5 +1,4 @@
-﻿using FirebotProxy.Data.Entities;
-using MediatR;
+﻿using MediatR;
 
 namespace FirebotProxy.SecondaryPorts.GetChatMessageLeaderboard;
 

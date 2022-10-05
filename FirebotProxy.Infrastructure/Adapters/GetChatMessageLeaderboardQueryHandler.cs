@@ -1,9 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using FirebotProxy.Data.Access;
-using FirebotProxy.Data.Entities;
 using FirebotProxy.SecondaryPorts.GetChatMessageLeaderboard;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 [assembly: InternalsVisibleTo("FirebotProxy.Infrastructure.Tests")]

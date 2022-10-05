@@ -6,10 +6,7 @@ using FirebotProxy.Domain.Tests.FakeHandlers;
 using FirebotProxy.Domain.Validators;
 using FirebotProxy.TestBase;
 using FluentAssertions;
-using FluentValidation;
-using FluentValidation.Results;
 using Microsoft.Extensions.Logging.Abstractions;
-using Moq;
 using NUnit.Framework;
 
 namespace FirebotProxy.Domain.Tests;
