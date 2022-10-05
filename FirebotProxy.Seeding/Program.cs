@@ -6,9 +6,9 @@ using MoreLinq;
 
 namespace FirebotProxy.Seeding;
 
-public class Program
+public static class Program
 {
-    public async Task Main(string[] args)
+    public static async Task Main(string[] args)
     {
         Console.WriteLine("Hello, World!");
 
@@ -20,7 +20,7 @@ public class Program
             .WithParsedAsync(async opts => await RunOptions(opts, ctx));
     }
 
-    private async Task RunOptions(Options options, FirebotProxyContext ctx)
+    private static async Task RunOptions(Options options, FirebotProxyContext ctx)
     {
         var usernameFaker = new Bogus.DataSets.Internet();
         var usernamesToPickFrom = new List<string>();
