@@ -9,6 +9,7 @@ on:
 jobs:
   build:
     name: Build And Test The Solution
+
     strategy:
       matrix:
         kind: ['linux', 'windows', 'macOS']
@@ -16,22 +17,30 @@ jobs:
           - kind: linux
             os: ubuntu-latest
             target: linux-x64
+
           - kind: windows
             os: windows-latest
             target: win-x64
+
           - kind: macOS
             os: macos-latest
             target: osx-x64
+
     runs-on: ${{ matrix.os }}
+
     steps:
     - uses: actions/checkout@v3
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
+
     - name: Restore Dependencies
       run: dotnet restore
+
     - name: Build Solution
       run: dotnet build --no-restore
+
     - name: Run Unit Tests
       run: dotnet test --no-build --verbosity normal
