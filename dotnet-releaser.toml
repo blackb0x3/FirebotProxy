@@ -1,6 +1,0 @@
-# configuration file for dotnet-releaser
-[msbuild]
-project = "FirebotProxy.sln"
-[github]
-user = "blackb0x3"
-repo = "FirebotProxy"
