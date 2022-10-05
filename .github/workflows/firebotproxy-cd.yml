@@ -5,6 +5,9 @@ on:
     tags:
       - '*'
 
+env:
+  isPreview: ${{ endsWith(github.ref_name, '-preview') }}
+
 jobs:
   release:
     name: Create FirebotProxy Release
@@ -60,7 +63,7 @@ jobs:
       - name: Publish A New GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          prerelease: endsWith($GITHUB_REF_NAME, '-preview')
+          prerelease: ${{ env.isPreview }}
           files: "FirebotProxy-*"
           generate_release_notes: true
         env:
