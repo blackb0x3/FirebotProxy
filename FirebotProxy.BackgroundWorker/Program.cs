@@ -12,7 +12,9 @@ using Serilog;
 IHost host = Host.CreateDefaultBuilder(args)
     .UseSerilog((_, lc) => lc
         .WriteTo.Console()
+#if DEBUG
         .WriteTo.Seq("http://localhost:5341")
+#endif
     )
     .ConfigureServices(services =>
     {

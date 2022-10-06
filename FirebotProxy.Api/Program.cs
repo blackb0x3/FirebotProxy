@@ -12,7 +12,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Serilog setup
 builder.Host.UseSerilog((_, lc) => lc
     .WriteTo.Console()
+#if DEBUG
     .WriteTo.Seq("http://localhost:5341")
+#endif
 );
 
 builder.Services.AddDbContext<FirebotProxyContext>(options =>
