@@ -40,25 +40,20 @@ jobs:
           app_name="FirebotProxy"
           tag=$(git describe --tags --abbrev=0)
           api_release_name="$app_name-api-$tag-${{ matrix.target }}"
-          bw_release_name="$app_name-backgroundworker-$tag-${{ matrix.target }}"
 
           # Build everything
           dotnet publish FirebotProxy.Api/FirebotProxy.Api.csproj --framework net6.0 --runtime "${{ matrix.target }}" -c Release -o "$api_release_name" -p:PublishSingleFile=true --self-contained false
-          dotnet publish FirebotProxy.BackgroundWorker/FirebotProxy.BackgroundWorker.csproj --framework net6.0 --runtime "${{ matrix.target }}" -c Release -o "$bw_release_name" -p:PublishSingleFile=true --self-contained false
 
           # Pack files
           if [ "${{ matrix.target }}" == "win-x64" ]; then
-            # Pack to zip for Windows
+            # Pack to zip for Windows platforms
             7z a -tzip "${api_release_name}.zip" "./${api_release_name}/*"
-            7z a -tzip "${bw_release_name}.zip" "./${bw_release_name}/*"
           else
             tar czvf "${api_release_name}.tar.gz" "$api_release_name"
-            tar czvf "${bw_release_name}.tar.gz" "$bw_release_name"
           fi
 
           # Delete output directories
           rm -rf "$api_release_name"
-          rm -rf "$bw_release_name"
           
       - name: Publish A New GitHub Release
         uses: softprops/action-gh-release@v1

@@ -1,6 +1,7 @@
 ﻿using FirebotProxy.Domain.PrimaryPorts.RemoveExpiredChatMessages;
 using FirebotProxy.Extensions;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using Quartz;
 
 namespace FirebotProxy.BackgroundWorker.Jobs.RemoveExpiredChatMessages;

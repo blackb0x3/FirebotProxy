@@ -13,12 +13,15 @@
         <PackageReference Include="morelinq" Version="3.3.2" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="OneOf" Version="3.0.223" />
+        <PackageReference Include="Quartz.Extensions.DependencyInjection" Version="3.5.0" />
+        <PackageReference Include="Quartz.Plugins" Version="3.5.0" />
         <PackageReference Include="Serilog.AspNetCore" Version="6.0.1" />
         <PackageReference Include="Serilog.Sinks.Seq" Version="5.2.1" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\FirebotProxy.BackgroundWorker\FirebotProxy.BackgroundWorker.csproj" />
       <ProjectReference Include="..\FirebotProxy.Data.Access\FirebotProxy.Data.Access.csproj" />
       <ProjectReference Include="..\FirebotProxy.Domain\FirebotProxy.Domain.csproj" />
       <ProjectReference Include="..\FirebotProxy.Extensions\FirebotProxy.Extensions.csproj" />
