@@ -10,13 +10,13 @@ The FirebotProxy eliminates this dependency to make these commands easier to set
 
 Head over to the releases section on the right and take a look at the latest version of the proxy (recommended), or alternatively, dive into any of the older versions available.
 
-You'll want to grab both the API and BackgroundWorker archives for the OS you're currently using (Windows, Mac or Linux). Once downloaded, unpack them into a folder of your choosing and run the executables (the FirebotProxy.Api and FirebotProxy.BackgroundWorker).
+You'll want to grab the relevant archive file for OS you're currently using (Windows, Mac or Linux). Once downloaded, unpack the files into a folder of your choosing and run the executable.
 
 On startup, it will create a cache file in your home folder called `firebotproxy.db` which is used by the app to perform the various operations explained under the [Using the FirebotProxy](#using-the-firebotproxy) section.
 
 ## Uninstalling
 
-If you want to uninstall the proxy, delete the folders you created for the API and BackgroundWorker, and delete the `firebotproxy.db` file in your home folder. That's it!
+If you want to uninstall the proxy, delete the folder you created for the app, and delete the `firebotproxy.db` file in your home folder. That's it!
 
 ## Building from Source
 
