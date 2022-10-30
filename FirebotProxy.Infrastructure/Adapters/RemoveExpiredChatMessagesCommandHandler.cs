@@ -32,7 +32,8 @@ internal class RemoveExpiredChatMessagesCommandHandler : IRequestHandler<RemoveE
             {
                 if (_context.Database.IsRelational())
                 {
-                    var query = $"DELETE FROM ChatMessages WHERE DATE([Timestamp]) > DATE('{request.Cutoff:s}')";
+                    var formattedCutoff = request.Cutoff.ToString("yyyy-MM-dd HH:mm:ss");
+                    var query = $"DELETE FROM ChatMessages WHERE DATE(Timestamp) < DATE('{formattedCutoff}')";
                     await _context.Database.ExecuteSqlRawAsync(query, cancellationToken);
                 }
 

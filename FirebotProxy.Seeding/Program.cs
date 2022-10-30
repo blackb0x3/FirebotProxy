@@ -41,7 +41,7 @@ public static class Program
 
         foreach (var batch in msgFaker.GenerateLazy(options.AmountToGenerate).Batch(batchSize))
         {
-            Console.WriteLine($"Batch {batchCounter++} of {totalBatches}");
+            Console.WriteLine($"Batch {++batchCounter} of {totalBatches}");
             await ctx.AddRangeAsync(batch);
             await ctx.SaveChangesAsync();
             Console.WriteLine("Batch saved");
