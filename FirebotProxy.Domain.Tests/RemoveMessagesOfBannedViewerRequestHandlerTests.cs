@@ -1,5 +1,5 @@
 ﻿using FirebotProxy.Domain.Adapters;
-using FirebotProxy.Domain.PrimaryPorts.RemoveMessagesOfBannedViewer;
+using FirebotProxy.Domain.PrimaryPorts.RemoveViewerMessages;
 using FirebotProxy.Domain.Representations;
 using FirebotProxy.Domain.Tests.FakeHandlers;
 using FirebotProxy.Domain.Validators;
