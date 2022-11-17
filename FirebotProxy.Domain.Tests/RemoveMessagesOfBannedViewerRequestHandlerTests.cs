@@ -12,10 +12,10 @@ namespace FirebotProxy.Domain.Tests;
 
 public abstract class RemoveMessagesOfBannedViewerRequestHandlerTestBase
 {
-    protected static RemoveMessagesOfBannedViewerRequest ConstructRequest(string username) =>
+    protected static RemoveViewerMessagesRequest ConstructRequest(string username) =>
         new()
         {
-            BannedViewerUsername = username
+            ViewerUsername = username
         };
 }
 
@@ -25,19 +25,19 @@ public class A_RemoveMessagesOfBannedViewer_Request_Handler_Removes_Messages : R
     [Test]
     public async Task Successfully()
     {
-        var logger = new NullLogger<RemoveMessagesOfBannedViewerRequestHandler>();
+        var logger = new NullLogger<RemoveViewerMessagesRequestHandler>();
 
         var mediator = new MediatRFactory(typeof(A_RemoveMessagesOfBannedViewer_Request_Handler_Removes_Messages).Assembly)
             .AddSingletonHandler(new FakeRemoveMessagesByUsernameCommandHandler(false));
 
         var validator = new RemoveMessagesOfBannedViewerRequestValidator();
 
-        var handler = new RemoveMessagesOfBannedViewerRequestHandler(logger, mediator.Build(), validator);
+        var handler = new RemoveViewerMessagesRequestHandler(logger, mediator.Build(), validator);
 
         var request = ConstructRequest("test_viewer");
         var response = await handler.Handle(request, CancellationToken.None);
 
-        response.Value.Should().BeOfType<RemoveMessagesOfBannedViewerSuccess>();
+        response.Value.Should().BeOfType<RemoveViewerMessagesSuccess>();
     }
 }
 
@@ -50,14 +50,14 @@ public class A_RemoveMessagesOfBannedViewer_Request_Handler_Does_Not_Remove_Mess
     [TestCase("  ")]
     public async Task When_The_Username_Of_The_Banned_Viewer_Is_Not_Provided(string username)
     {
-        var logger = new NullLogger<RemoveMessagesOfBannedViewerRequestHandler>();
+        var logger = new NullLogger<RemoveViewerMessagesRequestHandler>();
 
         var mediator = new MediatRFactory(typeof(A_RemoveMessagesOfBannedViewer_Request_Handler_Removes_Messages).Assembly)
             .AddSingletonHandler(new FakeRemoveMessagesByUsernameCommandHandler(false));
 
         var validator = new RemoveMessagesOfBannedViewerRequestValidator();
 
-        var handler = new RemoveMessagesOfBannedViewerRequestHandler(logger, mediator.Build(), validator);
+        var handler = new RemoveViewerMessagesRequestHandler(logger, mediator.Build(), validator);
 
         var request = ConstructRequest(username);
         var response = await handler.Handle(request, CancellationToken.None);
@@ -70,14 +70,14 @@ public class A_RemoveMessagesOfBannedViewer_Request_Handler_Does_Not_Remove_Mess
     [Test]
     public async Task When_An_Exception_Is_Thrown()
     {
-        var logger = new NullLogger<RemoveMessagesOfBannedViewerRequestHandler>();
+        var logger = new NullLogger<RemoveViewerMessagesRequestHandler>();
 
         var mediator = new MediatRFactory(typeof(A_RemoveMessagesOfBannedViewer_Request_Handler_Removes_Messages).Assembly)
             .AddSingletonHandler(new FakeRemoveMessagesByUsernameCommandHandler(true));
 
         var validator = new RemoveMessagesOfBannedViewerRequestValidator();
 
-        var handler = new RemoveMessagesOfBannedViewerRequestHandler(logger, mediator.Build(), validator);
+        var handler = new RemoveViewerMessagesRequestHandler(logger, mediator.Build(), validator);
 
         var request = ConstructRequest("test_viewer");
         var response = await handler.Handle(request, CancellationToken.None);
