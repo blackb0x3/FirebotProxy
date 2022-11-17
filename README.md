@@ -131,7 +131,7 @@ Should the need arise, the proxy supports the deletion of cached chat messages w
 
 **EXAMPLE TRIGGER ON**: Viewer Banned
 
-**URL**: `https://localhost:7296/Events/RemoveBannedViewerMessages`
+**URL**: `https://localhost:7296/Events/RemoveViewerMessages`
 
 **METHOD**: POST
 
@@ -139,7 +139,7 @@ Should the need arise, the proxy supports the deletion of cached chat messages w
 
 ```json
 {
-  "bannedViewerUsername": "$user"
+  "viewerUsername": "$user"
 }
 ```
 
