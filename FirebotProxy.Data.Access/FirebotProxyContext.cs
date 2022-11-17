@@ -5,10 +5,6 @@ namespace FirebotProxy.Data.Access;
 
 public class FirebotProxyContext : DbContext
 {
-    private FirebotProxyContext()
-    {
-    }
-
     public FirebotProxyContext(DbContextOptions<FirebotProxyContext> options) : base(options)
     {
     }

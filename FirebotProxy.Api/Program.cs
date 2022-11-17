@@ -32,6 +32,14 @@ InfrastructureInstaller.Install(builder.Services);
 
 var app = builder.Build();
 
+// Apply the latest migration/s to the user's FirebotProxy.db file
+await using var tempScope = app.Services.CreateAsyncScope();
+
+var tempCtx = tempScope.ServiceProvider.GetRequiredService<FirebotProxyContext>();
+await tempCtx.Database.MigrateAsync();
+
+await tempCtx.DisposeAsync();
+
 app.UseFirebotRequestMiddleware();
 
 // Configure the HTTP request pipeline.

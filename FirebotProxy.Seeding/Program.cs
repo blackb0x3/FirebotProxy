@@ -2,6 +2,7 @@
 using CommandLine;
 using FirebotProxy.Data.Access;
 using FirebotProxy.Data.Entities;
+using Microsoft.EntityFrameworkCore;
 using MoreLinq;
 
 namespace FirebotProxy.Seeding;
@@ -14,6 +15,7 @@ public static class Program
 
         var ctxFactory = new FirebotProxyContextFactory();
         var ctx = ctxFactory.CreateDbContext(args);
+        await ctx.Database.MigrateAsync();
 
         await Parser.Default
             .ParseArguments<Options>(args)
