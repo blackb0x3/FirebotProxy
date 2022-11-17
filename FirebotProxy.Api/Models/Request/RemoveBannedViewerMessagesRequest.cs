@@ -1,6 +1,6 @@
 namespace FirebotProxy.Api.Models.Request;
 
-public class RemoveBannedViewerMessagesRequest
+public class RemoveViewerMessagesModel
 {
-    public string BannedViewerUsername { get; set; } = null!;
+    public string ViewerUsername { get; set; } = null!;
 }

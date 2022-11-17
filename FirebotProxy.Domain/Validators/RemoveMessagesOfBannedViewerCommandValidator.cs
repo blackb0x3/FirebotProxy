@@ -1,15 +1,15 @@
-﻿using FirebotProxy.Domain.PrimaryPorts.RemoveMessagesOfBannedViewer;
+﻿using FirebotProxy.Domain.PrimaryPorts.RemoveViewerMessages;
 using FirebotProxy.Validation;
 using FluentValidation;
 
 namespace FirebotProxy.Domain.Validators;
 
-public class RemoveMessagesOfBannedViewerRequestValidator : AbstractValidator<RemoveMessagesOfBannedViewerRequest>
+public class RemoveMessagesOfBannedViewerRequestValidator : AbstractValidator<RemoveViewerMessagesRequest>
 {
     public RemoveMessagesOfBannedViewerRequestValidator()
     {
-        RuleFor(req => req.BannedViewerUsername)
-            .SetValidator(new IsNullEmptyOrWhitespacePropertyValidator<RemoveMessagesOfBannedViewerRequest>())
+        RuleFor(req => req.ViewerUsername)
+            .SetValidator(new IsNullEmptyOrWhitespacePropertyValidator<RemoveViewerMessagesRequest>())
             .WithMessage("Viewer username must not be null or empty.");
     }
 }

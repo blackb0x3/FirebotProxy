@@ -1,5 +1,5 @@
 ﻿using FirebotProxy.Api.Models.Request;
-using FirebotProxy.Domain.PrimaryPorts.RemoveMessagesOfBannedViewer;
+using FirebotProxy.Domain.PrimaryPorts.RemoveViewerMessages;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using LogChatMessageRequest = FirebotProxy.Api.Models.Request.LogChatMessageRequest;
@@ -36,12 +36,12 @@ public class EventsController : ProxyControllerBase
         );
     }
 
-    [HttpPost("RemoveBannedViewerMessages")]
-    public async Task<IResult> RemoveBannedViewerMessages([FromBody] RemoveBannedViewerMessagesRequest request)
+    [HttpPost("RemoveViewerMessages")]
+    public async Task<IResult> RemoveViewerMessages([FromBody] RemoveViewerMessagesModel request)
     {
-        var command = new RemoveMessagesOfBannedViewerRequest
+        var command = new RemoveViewerMessagesRequest
         {
-            BannedViewerUsername = request.BannedViewerUsername
+            ViewerUsername = request.ViewerUsername
         };
 
         var resp = await _mediator.Send(command);
