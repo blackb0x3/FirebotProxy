@@ -47,4 +47,17 @@ public class CommandsController : ProxyControllerBase
             error => Results.Problem(error.Message, statusCode: 500)
         );
     }
+
+    [HttpGet("WordCloud")]
+    public async Task<IResult> WordCloud()
+    {
+        var request = someMapper.MapStuff();
+        var response = await _mediator.Send(request);
+
+        return response.Match(
+            result => Results.Ok(result),
+            validation => Results.BadRequest(validation),
+            error => Results.Problem(error.Message, statusCode: 500)
+        );
+    }
 }

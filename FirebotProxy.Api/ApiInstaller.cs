@@ -1,4 +1,5 @@
-﻿using FirebotProxy.Api.Middleware;
+﻿using System.Reflection;
+using FirebotProxy.Api.Middleware;
 using FirebotProxy.BackgroundWorker;
 using FirebotProxy.BackgroundWorker.Jobs.RemoveExpiredChatMessages;
 using FirebotProxy.Extensions;
@@ -40,4 +41,6 @@ public class ApiInstaller
 
         services.AddHostedService<Worker>();
     }
+
+    private static readonly Assembly ApiProjectAssembly = typeof(ApiInstaller).Assembly;
 }
