@@ -8,6 +8,8 @@ public class GetChatWordCloudRequest : IRequest<OneOf<GetChatWordCloudResponse, 
 {
     public string? ViewerUsername { get; set; }
 
+    public string? StreamDate { get; set; }
+
     public WordCloudSettings WordCloudSettings { get; set; }
 }
 

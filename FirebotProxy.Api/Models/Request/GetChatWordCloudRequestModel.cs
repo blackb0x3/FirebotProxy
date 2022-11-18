@@ -4,10 +4,10 @@ namespace FirebotProxy.Api.Models.Request;
 
 public class GetChatWordCloudRequestModel
 {
-    [FromQuery]
     public string? ViewerUsername { get; set; }
 
-    [FromQuery]
+    public string? StreamDate { get; set; }
+
     public WordCloudSettingsModel WordCloudSettings { get; set; }
 }
 
