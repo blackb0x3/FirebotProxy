@@ -1,5 +1,8 @@
-﻿using FirebotProxy.Domain.PrimaryPorts.GetViewerChatPlot;
+﻿using FirebotProxy.Api.Models.Request;
+using FirebotProxy.Domain.PrimaryPorts.GetChatWordCloud;
+using FirebotProxy.Domain.PrimaryPorts.GetViewerChatPlot;
 using FirebotProxy.Domain.PrimaryPorts.GetViewerChatRank;
+using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +12,7 @@ public class CommandsController : ProxyControllerBase
 {
     private readonly ILogger<CommandsController> _logger;
     private readonly IMediator _mediator;
+    private readonly IMapper _mapper;
 
     public CommandsController(ILogger<CommandsController> logger, IMediator mediator)
     {
@@ -48,10 +52,10 @@ public class CommandsController : ProxyControllerBase
         );
     }
 
-    [HttpGet("WordCloud")]
-    public async Task<IResult> WordCloud()
+    [HttpPost("WordCloud")]
+    public async Task<IResult> WordCloud([FromBody] GetChatWordCloudRequestModel model)
     {
-        var request = someMapper.MapStuff();
+        var request = _mapper.Map<GetChatWordCloudRequest>(model);
         var response = await _mediator.Send(request);
 
         return response.Match(
