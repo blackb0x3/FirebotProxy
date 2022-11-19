@@ -25,8 +25,3 @@ public class WordCloudSettings
 
     public string[] WordHexColours { get; set; }
 }
-
-public class GetChatWordCloudResponse
-{
-    public string WordCloudUrl { get; set; }
-}

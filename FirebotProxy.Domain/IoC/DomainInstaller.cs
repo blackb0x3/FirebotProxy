@@ -7,7 +7,7 @@ namespace FirebotProxy.Domain.IoC;
 
 public class DomainInstaller
 {
-    private static readonly Assembly DomainProjectAssembly = typeof(DomainInstaller).Assembly;
+    public static readonly Assembly DomainProjectAssembly = typeof(DomainInstaller).Assembly;
 
     public static void Install(IServiceCollection services)
     {
