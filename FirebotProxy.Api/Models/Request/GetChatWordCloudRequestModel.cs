@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace FirebotProxy.Api.Models.Request;
+﻿namespace FirebotProxy.Api.Models.Request;
 
 public class GetChatWordCloudRequestModel
 {

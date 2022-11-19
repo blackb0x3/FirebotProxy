@@ -14,10 +14,11 @@ public class CommandsController : ProxyControllerBase
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;
 
-    public CommandsController(ILogger<CommandsController> logger, IMediator mediator)
+    public CommandsController(ILogger<CommandsController> logger, IMediator mediator, IMapper mapper)
     {
         _logger = logger;
         _mediator = mediator;
+        _mapper = mapper;
     }
 
     [HttpGet("ChatRank/{viewerUsername}")]
