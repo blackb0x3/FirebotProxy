@@ -1,6 +1,8 @@
-﻿using FirebotProxy.Domain.PrimaryPorts.GetChatWordCloud;
+﻿using System.Text;
+using FirebotProxy.Domain.PrimaryPorts.GetChatWordCloud;
 using FirebotProxy.Domain.Representations;
 using FirebotProxy.Extensions;
+using FirebotProxy.SecondaryPorts.GenerateWordCloud;
 using FirebotProxy.SecondaryPorts.GetChatMessageText;
 using FluentValidation;
 using MediatR;
@@ -60,6 +62,20 @@ public class GetChatWordCloudRequestHandler : IRequestHandler<GetChatWordCloudRe
         }
 
         var chatText = await GetChatText(request.ViewerUsername, request.StreamDate, cancellationToken);
+
+        // TODO inject mapper and implement converter
+        WordCloudOptions wordCloudOptions = _mapper.Map<WordCloudOptions>(request.WordCloudSettings);
+
+        var generateWordCloudResponse = await _mediator.Send(new GenerateWordCloudCommand { WordCloudOptions = wordCloudOptions }, cancellationToken);
+
+        if (generateWordCloudResponse.IsT1)
+        {
+            throw new Exception("QuickChart could not render a word cloud");
+        }
+
+        var base64WordCloud = Convert.ToBase64String(Encoding.UTF8.GetBytes(generateWordCloudResponse.AsT0.WordCloudContent));
+
+        // TODO append base64 string to word cloud renderer on blackb0x3 github IO page
 
         return new GetChatWordCloudResponse
         {
