@@ -4,6 +4,7 @@ using FirebotProxy.Domain.Representations;
 using FirebotProxy.Extensions;
 using FirebotProxy.SecondaryPorts.GenerateWordCloud;
 using FirebotProxy.SecondaryPorts.GetChatMessageText;
+using FirebotProxy.SecondaryPorts.ShortenUrl;
 using FluentValidation;
 using MapsterMapper;
 using MediatR;
@@ -79,9 +80,11 @@ public class GetChatWordCloudRequestHandler : IRequestHandler<GetChatWordCloudRe
         var base64WordCloud = generateWordCloudResponse.AsT0.WordCloudContent.ToUrlSafeBase64String();
         var base64WordCloudUrl = $"https://blackb0x3.github.io?base64SvgContent={base64WordCloud}";
 
+        var shortenedUrl = await _mediator.Send(new ShortenUrlCommand { UrlToShorten = base64WordCloudUrl }, cancellationToken);
+
         return new GetChatWordCloudResponse
         {
-            WordCloudUrl = string.Empty
+            WordCloudUrl = shortenedUrl
         };
     }
 
