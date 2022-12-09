@@ -1,5 +1,4 @@
-﻿using System.Text;
-using FirebotProxy.Domain.PrimaryPorts.GetChatWordCloud;
+﻿using FirebotProxy.Domain.PrimaryPorts.GetChatWordCloud;
 using FirebotProxy.Domain.Representations;
 using FirebotProxy.Extensions;
 using FirebotProxy.SecondaryPorts.GenerateWordCloud;
