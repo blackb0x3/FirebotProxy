@@ -18,7 +18,7 @@ public class WordCloudOptions
 
     public string FontFamily { get; set; }
 
-    public bool LoadGoogleFonts { get; set; }
+    public bool LoadGoogleFonts { get; set; } = true;
 
     public int FontScale { get; set; }
 
@@ -45,7 +45,7 @@ public class WordCloudOptions
 
     public string[] WordHexColours { get; set; }
 
-    public bool RemoveStopwords { get; set; }
+    public bool RemoveStopwords { get; set; } = true;
 
     public string Language { get; set; }
 
