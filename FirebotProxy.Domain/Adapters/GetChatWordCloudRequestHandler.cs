@@ -5,6 +5,7 @@ using FirebotProxy.Extensions;
 using FirebotProxy.SecondaryPorts.GenerateWordCloud;
 using FirebotProxy.SecondaryPorts.GetChatMessageText;
 using FluentValidation;
+using MapsterMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using OneOf;
@@ -16,12 +17,14 @@ public class GetChatWordCloudRequestHandler : IRequestHandler<GetChatWordCloudRe
     private readonly ILogger<GetChatWordCloudRequestHandler> _logger;
     private readonly IValidator<GetChatWordCloudRequest> _validator;
     private readonly IMediator _mediator;
+    private readonly IMapper _mapper;
 
-    public GetChatWordCloudRequestHandler(ILogger<GetChatWordCloudRequestHandler> logger, IValidator<GetChatWordCloudRequest> validator, IMediator mediator)
+    public GetChatWordCloudRequestHandler(ILogger<GetChatWordCloudRequestHandler> logger, IValidator<GetChatWordCloudRequest> validator, IMediator mediator, IMapper mapper)
     {
         _logger = logger;
         _validator = validator;
         _mediator = mediator;
+        _mapper = mapper;
     }
 
     public async Task<OneOf<GetChatWordCloudResponse, ValidationRepresentation, ErrorRepresentation>> Handle(GetChatWordCloudRequest request, CancellationToken cancellationToken)
@@ -63,8 +66,8 @@ public class GetChatWordCloudRequestHandler : IRequestHandler<GetChatWordCloudRe
 
         var chatText = await GetChatText(request.ViewerUsername, request.StreamDate, cancellationToken);
 
-        // TODO inject mapper and implement converter
         WordCloudOptions wordCloudOptions = _mapper.Map<WordCloudOptions>(request.WordCloudSettings);
+        wordCloudOptions.Text = chatText;
 
         var generateWordCloudResponse = await _mediator.Send(new GenerateWordCloudCommand { WordCloudOptions = wordCloudOptions }, cancellationToken);
 
@@ -73,9 +76,8 @@ public class GetChatWordCloudRequestHandler : IRequestHandler<GetChatWordCloudRe
             throw new Exception("QuickChart could not render a word cloud");
         }
 
-        var base64WordCloud = Convert.ToBase64String(Encoding.UTF8.GetBytes(generateWordCloudResponse.AsT0.WordCloudContent));
-
-        // TODO append base64 string to word cloud renderer on blackb0x3 github IO page
+        var base64WordCloud = generateWordCloudResponse.AsT0.WordCloudContent.ToUrlSafeBase64String();
+        var base64WordCloudUrl = $"https://blackb0x3.github.io?base64SvgContent={base64WordCloud}";
 
         return new GetChatWordCloudResponse
         {
