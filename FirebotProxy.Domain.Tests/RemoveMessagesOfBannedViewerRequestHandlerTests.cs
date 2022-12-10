@@ -64,7 +64,7 @@ public class A_RemoveMessagesOfBannedViewer_Request_Handler_Does_Not_Remove_Mess
 
         response.Value.Should().BeOfType<ValidationRepresentation>();
         response.AsT1.Errors.Should().HaveCount(1);
-        response.AsT1.Errors.First().Should().Be("BannedViewerUsername : Viewer username must not be null or empty.");
+        response.AsT1.Errors.First().Should().Be("`ViewerUsername`: Viewer username must not be null or empty.");
     }
 
     [Test]
@@ -83,6 +83,6 @@ public class A_RemoveMessagesOfBannedViewer_Request_Handler_Does_Not_Remove_Mess
         var response = await handler.Handle(request, CancellationToken.None);
 
         response.Value.Should().BeOfType<ErrorRepresentation>();
-        response.AsT2.Message.Should().Be("Failed to remove messages of banned viewer");
+        response.AsT2.Message.Should().Be("Failed to remove messages of viewer");
     }
 }
