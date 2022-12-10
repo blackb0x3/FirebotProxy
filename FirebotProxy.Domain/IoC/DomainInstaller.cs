@@ -12,6 +12,6 @@ public class DomainInstaller
     public static void Install(IServiceCollection services)
     {
         services.AddMediatR(DomainProjectAssembly);
-        services.AddValidatorsFromAssembly(DomainProjectAssembly);
+        services.AddValidatorsFromAssembly(DomainProjectAssembly, ServiceLifetime.Singleton);
     }
 }
