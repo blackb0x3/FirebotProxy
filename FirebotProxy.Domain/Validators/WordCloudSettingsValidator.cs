@@ -1,10 +1,8 @@
-﻿using System.Reflection;
-using System.Text.RegularExpressions;
-using FirebotProxy.Domain.IoC;
+﻿using System.Text.RegularExpressions;
 using FirebotProxy.Domain.PrimaryPorts.GetChatWordCloud;
-using FirebotProxy.Validation;
 using FluentValidation;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace FirebotProxy.Domain.Validators;
 
@@ -67,7 +65,11 @@ public class WordCloudSettingsValidator : AbstractValidator<WordCloudSettings>
 
     private static string[] LoadFontFile(string fontFilePath)
     {
-        return (string[]?)JsonConvert.DeserializeObject(File.ReadAllText(fontFilePath)) ?? Array.Empty<string>();
+        var txt = File.ReadAllText(fontFilePath);
+
+        return JsonConvert.DeserializeObject<JArray>(txt)?
+            .Select(token => token.Value<string>() ?? string.Empty)
+            .ToArray() ?? Array.Empty<string>();
     }
 
     private static string AppDomainDirectory => Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory) ?? string.Empty;
