@@ -53,14 +53,14 @@ public class WordCloudSettingsValidator : AbstractValidator<WordCloudSettings>
 
     private static string[] LoadStandardWebFonts()
     {
-        var path = Path.Join(DomainInstaller.DomainProjectAssembly.Location, StandardWebFontsFileName);
+        var path = Path.Join(AppDomainDirectory, StandardWebFontsFileName);
 
         return LoadFontFile(path);
     }
 
     private static string[] LoadStandardGoogleFonts()
     {
-        var path = Path.Join(DomainInstaller.DomainProjectAssembly.Location, StandardGoogleFontsFileName);
+        var path = Path.Join(AppDomainDirectory, StandardGoogleFontsFileName);
 
         return LoadFontFile(path);
     }
@@ -69,4 +69,6 @@ public class WordCloudSettingsValidator : AbstractValidator<WordCloudSettings>
     {
         return (string[]?)JsonConvert.DeserializeObject(File.ReadAllText(fontFilePath)) ?? Array.Empty<string>();
     }
+
+    private static string AppDomainDirectory => Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory) ?? string.Empty;
 }

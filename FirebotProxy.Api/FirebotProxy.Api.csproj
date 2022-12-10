@@ -31,4 +31,13 @@
       <ProjectReference Include="..\FirebotProxy.Infrastructure\FirebotProxy.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Include="standard-google-fonts.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Include="standard-web-fonts.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
