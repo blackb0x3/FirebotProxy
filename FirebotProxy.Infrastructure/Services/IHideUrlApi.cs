@@ -3,7 +3,7 @@ using Refit;
 
 namespace FirebotProxy.Infrastructure.Services;
 
-public interface IHideUrlApi
+public interface IHideUriApi
 {
     [Post("/api/v1/shorten")]
     Task<ShortenUrlResponseDto> ShortenUrl([Body(BodySerializationMethod.UrlEncoded)] ShortenUrlRequestDto dto);

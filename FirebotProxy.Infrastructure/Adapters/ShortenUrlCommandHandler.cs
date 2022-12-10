@@ -8,9 +8,9 @@ namespace FirebotProxy.Infrastructure.Adapters;
 public class ShortenUrlCommandHandler : IRequestHandler<ShortenUrlCommand, string>
 {
     private readonly ILogger<ShortenUrlCommandHandler> _logger;
-    private readonly IHideUrlApi _hideUrlApi;
+    private readonly IHideUriApi _hideUrlApi;
 
-    public ShortenUrlCommandHandler(ILogger<ShortenUrlCommandHandler> logger, IHideUrlApi hideUrlApi)
+    public ShortenUrlCommandHandler(ILogger<ShortenUrlCommandHandler> logger, IHideUriApi hideUrlApi)
     {
         _logger = logger;
         _hideUrlApi = hideUrlApi;
