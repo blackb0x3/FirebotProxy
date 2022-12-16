@@ -32,6 +32,9 @@ public static class Program
             usernamesToPickFrom.Add(usernameFaker.UserName());
         }
 
+        Console.WriteLine("Picking from the following usernames:");
+        Console.WriteLine($"[{string.Join(", ", usernamesToPickFrom)}]");
+
         var msgFaker = new AutoFaker<ChatMessage>();
         msgFaker.RuleFor(cm => cm.SenderUsername, faker => faker.PickRandom(usernamesToPickFrom));
         msgFaker.RuleFor(cm => cm.Timestamp, faker => faker.Date.Between(options.EarliestTimestamp ?? DateTime.Today.AddMonths(-1), DateTime.Today));
