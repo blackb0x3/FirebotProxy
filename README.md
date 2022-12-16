@@ -72,8 +72,6 @@ Analyses the cached chat messages and ranks the provided viewer based on the num
 
 **METHOD**: GET
 
-**BODY**: N/A
-
 **RESPONSE**:
 
 ```json
@@ -91,13 +89,50 @@ Analyses the cached chat messages for a viewer, and creates a picture chart, sho
 
 **METHOD**: GET
 
-**BODY**: N/A
-
 **RESPONSE**:
 
 ```json
 {
   "chartUrl": "https://quickchart.io/chart/render/<some-guid-of-a-chart>"
+}
+```
+
+### Get Chat Word Cloud
+
+Analyses the cached chat messages for a viewer, or a particular stream, or both, and creates a word cloud of the most used words / phrases based on the query.
+
+**URL**: `https://localhost:7296/Commands/WordCloud`
+
+**METHOD**: POST
+
+**BODY**:
+
+```json
+{
+  "viewerUsername": "blackb0x3",
+  "streamDate": "2022-11-18",
+  "wordCloudSettings": {
+    "width": 1000,
+    "height": 1000,
+    "backgroundHexColour": "#fedbca",
+    "fontFamily": "ubuntu",
+    "wordHexColours": [
+      "#111111",
+      "#222222",
+      "#333333",
+      "#444444",
+      "#555555",
+      "#666666"
+    ]
+  }
+}
+```
+
+**RESPONSE**:
+
+```json
+{
+  "wordCloudUrl": "<word-cloud-url>"
 }
 ```
 
