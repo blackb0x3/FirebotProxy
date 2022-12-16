@@ -4,7 +4,7 @@ public class ValidationRepresentation
 {
     public ValidationRepresentation(FluentValidation.Results.ValidationResult result)
     {
-        Errors = result.Errors.Select(e => $"{e.PropertyName} : {e.ErrorMessage}").ToList();
+        Errors = result.Errors.Select(e => $"`{e.PropertyName}`: {e.ErrorMessage}").ToList();
     }
 
     public ValidationRepresentation(string errorMessage)

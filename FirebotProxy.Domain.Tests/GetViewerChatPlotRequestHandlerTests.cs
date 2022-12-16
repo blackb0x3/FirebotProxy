@@ -73,7 +73,7 @@ public class A_GetViewerChatPlot_Request_Handler_Does_Not_Return_A_Chat_Plot_For
         response.Value.Should().BeOfType<ValidationRepresentation>();
 
         response.AsT1.Errors.Should().HaveCount(1);
-        response.AsT1.Errors.First().Should().Be("ViewerUsername : Viewer username must not be null or empty.");
+        response.AsT1.Errors.First().Should().Be("`ViewerUsername`: Viewer username must not be null or empty.");
     }
 
     [Test]
@@ -94,7 +94,7 @@ public class A_GetViewerChatPlot_Request_Handler_Does_Not_Return_A_Chat_Plot_For
         response.Value.Should().BeOfType<ValidationRepresentation>();
 
         response.AsT1.Errors.Should().HaveCount(1);
-        response.AsT1.Errors.First().Should().Be($"ChartType : Unsupported chart type. Valid chart types are: {string.Join(", ", Enum.GetValues<ChartType>()).ToLower()}");
+        response.AsT1.Errors.First().Should().Be($"`ChartType`: Unsupported chart type. Valid chart types are: {string.Join(", ", Enum.GetValues<ChartType>()).ToLower()}");
     }
 
     [Test]
@@ -118,6 +118,6 @@ public class A_GetViewerChatPlot_Request_Handler_Does_Not_Return_A_Chat_Plot_For
         response.Value.Should().BeOfType<ValidationRepresentation>();
 
         response.AsT1.Errors.Should().HaveCount(1);
-        response.AsT1.Errors.First().Should().Be($"ChartType : Unsupported chart type. Valid chart types are: {string.Join(", ", Enum.GetValues<ChartType>()).ToLower()}");
+        response.AsT1.Errors.First().Should().Be($"`ChartType`: Unsupported chart type. Valid chart types are: {string.Join(", ", Enum.GetValues<ChartType>()).ToLower()}");
     }
 }

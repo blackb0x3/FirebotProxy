@@ -58,7 +58,7 @@ public class A_LogChatMessage_Request_Handler_Does_Not_Log_A_Chat_Message : LogC
 
         response.Value.Should().BeOfType<ValidationRepresentation>();
         response.AsT1.Errors.Should().HaveCount(1);
-        response.AsT1.Errors.First().Should().Be("Content : Message content must not be null or empty.");
+        response.AsT1.Errors.First().Should().Be("`Content`: Message content must not be null or empty.");
     }
 
     [Test]
@@ -77,7 +77,7 @@ public class A_LogChatMessage_Request_Handler_Does_Not_Log_A_Chat_Message : LogC
 
         response.Value.Should().BeOfType<ValidationRepresentation>();
         response.AsT1.Errors.Should().HaveCount(1);
-        response.AsT1.Errors.First().Should().Be("SenderUsername : Sender username must not be null or empty.");
+        response.AsT1.Errors.First().Should().Be("`SenderUsername`: Sender username must not be null or empty.");
     }
 
     [Test]

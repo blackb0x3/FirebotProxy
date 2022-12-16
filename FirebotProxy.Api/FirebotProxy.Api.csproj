@@ -7,6 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Mapster" Version="7.3.0" />
+        <PackageReference Include="Mapster.DependencyInjection" Version="1.0.0" />
         <PackageReference Include="MediatR" Version="11.0.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.9" />
         <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
@@ -27,6 +29,15 @@
       <ProjectReference Include="..\FirebotProxy.Extensions\FirebotProxy.Extensions.csproj" />
       <ProjectReference Include="..\FirebotProxy.Helpers\FirebotProxy.Helpers.csproj" />
       <ProjectReference Include="..\FirebotProxy.Infrastructure\FirebotProxy.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="standard-google-fonts.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Include="standard-web-fonts.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>
