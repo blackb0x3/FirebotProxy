@@ -1,24 +1,25 @@
 ﻿using FirebotProxy.SecondaryPorts.ShortenUrl;
 using MediatR;
+using OneOf;
 
 namespace FirebotProxy.Domain.Tests.FakeHandlers;
 
-public class FakeShortenUrlCommandHandler : IRequestHandler<ShortenUrlCommand, string>
+public class FakeShortenUrlCommandHandler : IRequestHandler<ShortenUrlCommand, OneOf<ShortenUrlSuccess, ShortenUrlFailure>>
 {
-    private readonly bool _shouldThrowException;
+    private readonly bool _shouldFail;
 
-    public FakeShortenUrlCommandHandler(bool shouldThrowException)
+    public FakeShortenUrlCommandHandler(bool shouldFail)
     {
-        _shouldThrowException = shouldThrowException;
+        _shouldFail = shouldFail;
     }
 
-    public async Task<string> Handle(ShortenUrlCommand request, CancellationToken cancellationToken)
+    public async Task<OneOf<ShortenUrlSuccess, ShortenUrlFailure>> Handle(ShortenUrlCommand request, CancellationToken cancellationToken)
     {
-        if (_shouldThrowException)
+        if (_shouldFail)
         {
-            throw new Exception($"test exception message from {nameof(FakeShortenUrlCommandHandler)}");
+            return await Task.FromResult(new ShortenUrlFailure());
         }
 
-        return await Task.FromResult("https://shortened.url/abcdef");
+        return await Task.FromResult(new ShortenUrlSuccess { ShortenedUrl = "https://shortened.url/abcdef" });
     }
 }
