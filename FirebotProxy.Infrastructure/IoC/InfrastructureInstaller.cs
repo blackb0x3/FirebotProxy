@@ -22,7 +22,7 @@ public class InfrastructureInstaller
         services.AddRefitClient<IQuickChartApi>()
             .ConfigureHttpClient(c => c.BaseAddress = new Uri("https://quickchart.io"));
 
-        services.AddRefitClient<IHideUriApi>()
+        services.AddRefitClient<IHideUriApi>(provider => new RefitSettings(new NewtonsoftJsonContentSerializer()))
             .ConfigureHttpClient(c => c.BaseAddress = new Uri("https://hideuri.com"));
     }
 }

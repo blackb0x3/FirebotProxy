@@ -40,8 +40,8 @@ public class WordCloudSettingsValidator : AbstractValidator<WordCloudSettings>
 
     private static bool BeASupportedFontFamily(string fontFamilyToCheck)
     {
-        return Array.BinarySearch(StandardWebFonts, fontFamilyToCheck) >= 0 ||
-               Array.BinarySearch(StandardGoogleFonts, fontFamilyToCheck) >= 0;
+        return Array.BinarySearch(StandardWebFonts, fontFamilyToCheck.ToLower()) >= 0 ||
+               Array.BinarySearch(StandardGoogleFonts, fontFamilyToCheck.ToLower()) >= 0;
     }
 
     private static bool BeAValidHexColour(string hexColourToCheck)
@@ -68,7 +68,7 @@ public class WordCloudSettingsValidator : AbstractValidator<WordCloudSettings>
         var txt = File.ReadAllText(fontFilePath);
 
         return JsonConvert.DeserializeObject<JArray>(txt)?
-            .Select(token => token.Value<string>() ?? string.Empty)
+            .Select(token => token.Value<string>()?.ToLower() ?? string.Empty)
             .ToArray() ?? Array.Empty<string>();
     }
 

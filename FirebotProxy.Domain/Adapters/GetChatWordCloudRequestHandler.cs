@@ -64,39 +64,45 @@ public class GetChatWordCloudRequestHandler : IRequestHandler<GetChatWordCloudRe
             return new ValidationRepresentation(validationResult);
         }
 
-        var chatText = await GetChatText(request.ViewerUsername, request.StreamDate, cancellationToken);
+        var chatText = await GetChatText(request, cancellationToken);
 
-        WordCloudOptions wordCloudOptions = _mapper.Map<WordCloudOptions>(request.WordCloudSettings);
+        var wordCloudOptions = _mapper.Map<WordCloudOptions>(request.WordCloudSettings);
         wordCloudOptions.Text = chatText;
+
+        if (request.WordCloudSettings.WordHexColours.Length > 0)
+        {
+            wordCloudOptions.WordHexColours = $"[\"{string.Join("\",\"", request.WordCloudSettings.WordHexColours)}\"]";
+        }
 
         var generateWordCloudResponse = await _mediator.Send(new GenerateWordCloudCommand { WordCloudOptions = wordCloudOptions }, cancellationToken);
 
-        if (generateWordCloudResponse.IsT1)
-        {
-            throw new Exception("QuickChart could not render a word cloud");
-        }
+        generateWordCloudResponse.Switch(
+            success => { }, // carry on as normal
+            failure => throw new Exception("QuickChart could not render a word cloud") 
+        );
 
         var base64WordCloud = generateWordCloudResponse.AsT0.WordCloudContent.ToUrlSafeBase64String();
         var base64WordCloudUrl = $"https://blackb0x3.github.io?base64SvgContent={base64WordCloud}";
 
-        var shortenedUrl = await _mediator.Send(new ShortenUrlCommand { UrlToShorten = base64WordCloudUrl }, cancellationToken);
+        var shortenUrlResponse = await _mediator.Send(new ShortenUrlCommand { UrlToShorten = base64WordCloudUrl }, cancellationToken);
 
-        return new GetChatWordCloudResponse
-        {
-            WordCloudUrl = shortenedUrl
-        };
+        return shortenUrlResponse.Match(
+            success => new GetChatWordCloudResponse { WordCloudUrl = success.ShortenedUrl },
+            failure => throw new Exception("HideUri could not generate shortened word cloud URL")
+        );
     }
 
-    private async Task<string> GetChatText(string? viewerUsername, string? streamDate, CancellationToken cancellationToken)
+    private async Task<string> GetChatText(GetChatWordCloudRequest request, CancellationToken cancellationToken)
     {
         var chatTextQuery = new GetChatMessageTextQuery
         {
-            ViewerUsername = viewerUsername,
+            ViewerUsername = request.ViewerUsername,
+            NumberOfWordsToTake = 10
         };
 
-        if (streamDate != null)
+        if (request.StreamDate != null)
         {
-            chatTextQuery.StreamDate = DateTime.Parse(streamDate);
+            chatTextQuery.StreamDate = DateTime.Parse(request.StreamDate);
         }
 
         return await _mediator.Send(chatTextQuery, cancellationToken);

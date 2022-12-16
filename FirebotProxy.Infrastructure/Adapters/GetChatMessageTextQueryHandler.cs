@@ -19,7 +19,9 @@ public class GetChatMessageTextQueryHandler : IRequestHandler<GetChatMessageText
 
     public async Task<string> Handle(GetChatMessageTextQuery request, CancellationToken cancellationToken)
     {
-        var chatMessages = _context.ChatMessages.AsQueryable();
+        var chatMessages = _context.ChatMessages
+            .AsNoTracking()
+            .AsSplitQuery();
 
         if (request.ViewerUsername != null)
         {
@@ -33,7 +35,21 @@ public class GetChatMessageTextQueryHandler : IRequestHandler<GetChatMessageText
                 .Where(msg => msg.Timestamp < request.StreamDate.Value.AddDays(1));
         }
 
-        var chatText = string.Join(" ", chatMessages.Select(msg => msg.Content));
+        // get the most common words across every message
+        var wordCount = new Dictionary<string, uint>();
+        var messages = await chatMessages.Select(msg => msg.Content).ToListAsync(cancellationToken);
+
+        foreach (var word in messages.SelectMany(msg => msg.ReplaceLineEndings(" ").Split()))
+        {
+            wordCount.TryAdd(word, default);
+            wordCount[word] += 1;
+        }
+
+        // pick the top 100
+        var words = wordCount.OrderByDescending(kvp => kvp.Value).Take(request.NumberOfWordsToTake).Select(kvp => kvp.Key);
+
+        // now join them up
+        var chatText = string.Join(" ", words);
 
         return await Task.FromResult(chatText);
     }
