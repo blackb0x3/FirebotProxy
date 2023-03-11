@@ -3,7 +3,7 @@ using MediatR;
 
 namespace FirebotProxy.SecondaryPorts.SaveChatMessage;
 
-public class SaveChatMessageCommand : IRequest<Unit>
+public class SaveChatMessageCommand : IRequest
 {
     public ChatMessage ChatMessage { get; set; } = null!;
 }

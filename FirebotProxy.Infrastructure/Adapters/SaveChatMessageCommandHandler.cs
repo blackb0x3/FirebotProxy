@@ -20,7 +20,7 @@ internal class SaveChatMessageCommandHandler : IRequestHandler<SaveChatMessageCo
         _context = context;
     }
 
-    public async Task<Unit> Handle(SaveChatMessageCommand request, CancellationToken cancellationToken)
+    public async Task Handle(SaveChatMessageCommand request, CancellationToken cancellationToken)
     {
         var strategy = _context.Database.CreateExecutionStrategy();
 
@@ -42,7 +42,5 @@ internal class SaveChatMessageCommandHandler : IRequestHandler<SaveChatMessageCo
                 throw;
             }
         });
-
-        return Unit.Value;
     }
 }

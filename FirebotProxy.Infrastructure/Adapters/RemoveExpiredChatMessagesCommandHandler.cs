@@ -20,7 +20,7 @@ internal class RemoveExpiredChatMessagesCommandHandler : IRequestHandler<RemoveE
         _context = context;
     }
 
-    public async Task<Unit> Handle(RemoveExpiredChatMessagesCommand request, CancellationToken cancellationToken)
+    public async Task Handle(RemoveExpiredChatMessagesCommand request, CancellationToken cancellationToken)
     {
         var strategy = _context.Database.CreateExecutionStrategy();
 
@@ -48,7 +48,5 @@ internal class RemoveExpiredChatMessagesCommandHandler : IRequestHandler<RemoveE
                 throw;
             }
         });
-
-        return Unit.Value;
     }
 }

@@ -12,13 +12,13 @@ public class FakeSaveChatMessageCommandHandler : IRequestHandler<SaveChatMessage
         _shouldThrowException = shouldThrowException;
     }
 
-    public async Task<Unit> Handle(SaveChatMessageCommand request, CancellationToken cancellationToken)
+    public async Task Handle(SaveChatMessageCommand request, CancellationToken cancellationToken)
     {
         if (_shouldThrowException)
         {
             throw new Exception($"test exception message from {nameof(FakeSaveChatMessageCommandHandler)}");
         }
 
-        return await Unit.Task;
+        await Unit.Task;
     }
 }

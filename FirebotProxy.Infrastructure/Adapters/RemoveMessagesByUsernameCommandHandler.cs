@@ -20,7 +20,7 @@ internal class RemoveMessagesByUsernameCommandHandler : IRequestHandler<RemoveMe
         _context = context;
     }
 
-    public async Task<Unit> Handle(RemoveMessagesByUsernameCommand request, CancellationToken cancellationToken)
+    public async Task Handle(RemoveMessagesByUsernameCommand request, CancellationToken cancellationToken)
     {
         var strategy = _context.Database.CreateExecutionStrategy();
 
@@ -47,7 +47,5 @@ internal class RemoveMessagesByUsernameCommandHandler : IRequestHandler<RemoveMe
                 throw;
             }
         });
-
-        return Unit.Value;
     }
 }

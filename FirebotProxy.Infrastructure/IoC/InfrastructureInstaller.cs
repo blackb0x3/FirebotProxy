@@ -14,7 +14,10 @@ public class InfrastructureInstaller
     {
         AddInfrastructureServices(services);
 
-        services.AddMediatR(InfrastructureProjectAssembly);
+        services.AddMediatR(x =>
+        {
+            x.RegisterServicesFromAssembly(InfrastructureProjectAssembly);
+        });
     }
 
     private static void AddInfrastructureServices(IServiceCollection services)

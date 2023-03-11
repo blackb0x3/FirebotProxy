@@ -2,7 +2,7 @@
 
 namespace FirebotProxy.SecondaryPorts.RemoveMessagesByUsername;
 
-public class RemoveMessagesByUsernameCommand : IRequest<Unit>
+public class RemoveMessagesByUsernameCommand : IRequest
 {
     public string SenderUsername { get; set; } = null!;
 }

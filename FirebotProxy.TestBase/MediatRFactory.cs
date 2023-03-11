@@ -15,12 +15,21 @@ public class MediatRFactory
 
     public MediatRFactory(Assembly assembly) : this()
     {
-        _services.AddMediatR(assembly);
+        _services.AddMediatR(x =>
+        {
+            x.RegisterServicesFromAssembly(assembly);
+        });
     }
 
     public MediatRFactory AddSingletonHandler<T, T2>(IRequestHandler<T, T2> instance) where T : class, IRequest<T2>
     {
-        _services.AddTransient((s) => instance);
+        _services.AddTransient(_ => instance);
+        return this;
+    }
+
+    public MediatRFactory AddSingletonHandler<T>(IRequestHandler<T> instance) where T : class, IRequest
+    {
+        _services.AddTransient(_ => instance);
         return this;
     }
 
@@ -32,7 +41,7 @@ public class MediatRFactory
 
     public MediatRFactory AddTransientType<T>(T instance) where T : class
     {
-        _services.AddTransient((s) => instance);
+        _services.AddTransient(_ => instance);
         return this;
     }
 
